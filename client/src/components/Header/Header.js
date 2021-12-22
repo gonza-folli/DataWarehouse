@@ -7,7 +7,7 @@ export const Header = () => {
         <div className="NavBarDiv">
             <ul className="NavBar">
                 <li className="NavBarItem"><Link to="./" className="NavBarLink">Contactos</Link></li>
-                <li className="NavBarItem"><a className="NavBarLink" href="/#">Compañías</a></li>
+                <li className="NavBarItem"><Link to="/companies" className="NavBarLink">Compañías</Link></li>
                 <li className="NavBarItem"><a className="NavBarLink" href="/#">Usuarios</a></li>
                 <li className="NavBarItem"><Link to="/location" className="NavBarLink">Región/Ciudad</Link></li>
             </ul>

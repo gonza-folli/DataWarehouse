@@ -61,7 +61,8 @@ export const Location = () => {
 
 
 
-    return <>
+    return <section className='locationSection'>
+    <h1 className="title">Países - Regiones - Ciudades</h1>
     <div className="LocationFunctions">
         <button className='AddBtn' onClick={addCountry} >Agregar País</button>
         <button className='AddBtn' onClick={addState} >Agregar Estado</button>
@@ -90,6 +91,6 @@ export const Location = () => {
     {displayDltState ? <DltStateModal database={renderCountry} closeModal={dltState}/> : null}
     {displayDltCity ? <DltCityModal database={delCityData} closeModal={dltCity}/> : null}
     {renderCity ? <LocationTableHeader renderData={renderCity}/> : <h3>Para comenzar, completa ambos campos de búsqueda</h3>}
-    </>
+    </section>
 
 }

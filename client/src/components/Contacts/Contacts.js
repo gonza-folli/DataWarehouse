@@ -1,4 +1,3 @@
-import './ContactsFunctions.css'
 import { useState, useEffect, useContext } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUpload } from '@fortawesome/free-solid-svg-icons'
@@ -14,9 +13,10 @@ import { AddContactModal } from '../Modals/ContactModals/AddContactModal'
 import { ImportContactModal } from '../Modals/ContactModals/ImportContactModal'
 import { DeleteContactModal } from '../Modals/ContactModals/DeleteContactModal'
 import { EditContactModal } from '../Modals/ContactModals/EditContactModal'
+import './Contacts.css'
 
 
-export const ContactsFunctions = () => {
+export const Contacts = () => {
 
     //para desplegar el buscador por categoria
     const [displaySearchWindow, setDisplaySearchWindow] = useState(false)
@@ -73,7 +73,8 @@ export const ContactsFunctions = () => {
     const deleteContact = () => setDisplayDeleteContact(!displayDeleteContact)
 
 
-    return <>
+    return <section className="contactsSection">
+    <h1 className="title">Contactos</h1>
     <div className="ContactsFunctions">
         <div className="SearchPanel"> 
             <input className='SearchInput' onChange={(event)=> setSearchTerm(event.target.value)}></input>
@@ -104,6 +105,7 @@ export const ContactsFunctions = () => {
     {displayImportContact ? <ImportContactModal closeModal={setDisplayImportContact}/> : null}
     {displayDeleteContact ? <DeleteContactModal closeModal={setDisplayDeleteContact}/> : null}
     {displayDelSingleContact ? <DeleteContactModal closeModal={deleteSingleContact}/> : null}
-    </>
-
+    
+    </section>
 }
+

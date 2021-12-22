@@ -2,8 +2,9 @@ import { Header } from './components/Header/Header.js'
 import {BrowserRouter, Switch, Route} from 'react-router-dom'
 import { SearchProvider } from './components/Context/SearchProvider/SearchProvider.js';
 import { LocationProvider } from './components/Context/LocationProvider/LocationProvider.js';
-import { Body } from './components/BodyMain/Body.js'
+import { Contacts } from './components/Contacts/Contacts.js';
 import { Location } from './components/Location/Location.js';
+import { Companies } from './components/Companies/Companies.js';
 import './App.css';
 
 
@@ -16,7 +17,10 @@ function App() {
           <Header />
           <Switch>
             <Route exact path="/">
-              <Body />
+              <Contacts/>
+            </Route>
+            <Route exact path="/companies">
+              <Companies />
             </Route>
             <Route exact path="/location">
               <Location />

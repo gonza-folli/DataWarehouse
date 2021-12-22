@@ -29,11 +29,11 @@ CREATE TABLE cities(
     FOREIGN KEY (id_state) REFERENCES states(id_state)
 );
 
-CREATE TABLE countries_states_cities(
-    id_country INT NOT NULL,
-    id_state INT NOT NULL,
+CREATE TABLE companies(
+    id_company INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL,
+    phone INT NOT NULL,
     id_city INT NOT NULL,
-    PRIMARY KEY(id_country, id_state, id_city,
-    FOREIGN KEY (id_country) REFERENCES countries(id_country),
-    FOREIGN KEY (id_state) REFERENCES states(id_state),
+    PRIMARY KEY(id_company),
+    FOREIGN KEY (id_city) REFERENCES cities(id_city)
 );
