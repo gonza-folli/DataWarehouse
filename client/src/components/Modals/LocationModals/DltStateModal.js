@@ -1,4 +1,5 @@
 import {useEffect, useState, useContext} from 'react'
+import Swal from 'sweetalert2'
 import { LocationContext } from '../../Context/LocationProvider/LocationProvider'
 
 export const DltStateModal = ({closeModal, database}) => {
@@ -13,11 +14,10 @@ export const DltStateModal = ({closeModal, database}) => {
         state: ""
     })
 
-    useEffect( ()=> {
+    useEffect(()=> {
         if (location.country !== "" && location.state === "") {
             getStates(location.country).then(response => setRenderStates(response))
         }
-        console.log(location)
     }, [location, getStates])
 
     function onSelect (evt) {
@@ -26,22 +26,28 @@ export const DltStateModal = ({closeModal, database}) => {
         setLocation({...location, id_state, [evt.target.name]: evt.target.value})
     }
 
-    function deleteState (e) {
+    async function deleteState (e) {
         e.preventDefault()
-        fetch('/location/state', {
+        await fetch('/location/state', {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(location)
         })
         .then(response => response.json()).then(response => {
             if (response.error === false) {
-                alert(response.message)
+                Swal.fire({
+                    icon: 'success',
+                    text: `El estado/provincia ${location.state} se eliminó correctamente!`,
+                })
+                closeModal()
             } else {
-                alert("Primero debe eliminar las ciudades asociadas al la provincia")
+                Swal.fire({
+                    icon: 'error',
+                    text: `Primero debe eliminar las ciudades asociadas al la provincia`,
+                })
             }
         })
         .catch(e => console.log(e))
-        closeModal()
     }
 
 

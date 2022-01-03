@@ -1,13 +1,12 @@
 import { LocationData } from "../LocationData/LocationData"
 
-export const LocationTableHeader = ({renderData}) => {
+export const LocationTableHeader = ({renderData, renderCleanCities, openEditModal}) => {
 
     return <>
     {renderData ?
         <table className="content-table">
             <thead>
                 <tr>
-                    <th className='th1'><input type="checkbox" className="selectContact" id="selectContact" /></th>
                     <th className='th2'>Región</th>
                     <th className='th3'>País</th>
                     <th className='th4'>Provincia</th>
@@ -18,7 +17,7 @@ export const LocationTableHeader = ({renderData}) => {
             </thead>
             <tbody>
             {renderData ? renderData.map((data)=> 
-                <LocationData renderData={data} key={data.id_city}/>) : <tr className="loading"></tr>}
+                <LocationData renderData={data} key={data.id_city} renderCleanCities={renderCleanCities} openEditModal={openEditModal}/>) : <tr className="loading"></tr>}
             </tbody>
         </table>
     : <div className="loadingFather"><div className="loading"></div></div>}

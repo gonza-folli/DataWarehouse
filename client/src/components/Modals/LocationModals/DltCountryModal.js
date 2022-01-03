@@ -1,16 +1,12 @@
-import {useEffect, useState} from 'react'
+import {useState} from 'react'
+import Swal from 'sweetalert2'
 
 export const DltCountryModal = ({closeModal, database}) => {
-
 
     const [location, setLocation] = useState({
         id_country: "",
         country: ""
     })
-
-    useEffect( ()=> {
-        console.log(location)
-    }, [location])
 
     function onSelect (evt) {
         const selectedIndex = evt.target.options.selectedIndex
@@ -18,22 +14,28 @@ export const DltCountryModal = ({closeModal, database}) => {
         setLocation({...location, id_country, [evt.target.name]: evt.target.value})
     }
 
-    function deleteCountry (e) {
+    async function deleteCountry (e) {
         e.preventDefault()
-        fetch('/location/country', {
+        await fetch('/location/country', {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(location)
         })
-        .then(response => response.json()).then(response => {
-            if (response.error === false) {
-                alert(response.message)
+        .then(response => response.json()).then(data => {
+            if (data.error === false) {
+                Swal.fire({
+                    icon: 'success',
+                    text: `El pais ${location.country} se eliminó correctamente!`,
+                })
+                closeModal()
             } else {
-                alert("Primero debe eliminar las provincias y ciudades asociadas al país")
+                Swal.fire({
+                    icon: 'error',
+                    text: `Primero debe eliminar las provincias y ciudades asociadas al país`,
+                })
             }
         })
         .catch(e => console.log(e))
-        closeModal()
     }
 
 

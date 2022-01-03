@@ -1,8 +1,4 @@
-const {db_getSubregion} = require('../../models/db_location');
-const {db_getCountry} = require('../../models/db_location');
-const {db_getState} = require('../../models/db_location');
-const {db_getCity} = require('../../models/db_location');
-
+const {db_getSubregion, db_getCountry, db_getState, db_getCity} = require('../../models/db_location');
 
 const getLocation = async function (req, res) {
     const {region, country, state} = req.query

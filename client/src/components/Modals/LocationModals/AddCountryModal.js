@@ -1,6 +1,7 @@
 import './AddCountryModal.css'
 import {useContext, useEffect, useState } from 'react'
 import { LocationContext } from '../../Context/LocationProvider/LocationProvider'
+import Swal from 'sweetalert2'
 
 export const AddCountryModal = ({closeModal, database}) => {
 
@@ -22,18 +23,26 @@ export const AddCountryModal = ({closeModal, database}) => {
     }, [location, getSubregions])
 
 
-    function saveCountry (e) {
+    async function saveCountry (e) {
         e.preventDefault()
         let findDuplicate = database.find( x => x.country.toLowerCase() === location.country.toLowerCase())
         if (findDuplicate) {
-            alert("El pais ya existe")
+            Swal.fire({
+                icon: 'error',
+                text: `El pais ${location.country} ya se encuentra registrado!`,
+            })
         } else {
-            fetch('/location/country', {
+            await fetch('/location/country', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(location)
             })
-            .then(response => response.json()).then(response => console.log(response))
+            .then(response => response.json()).then(data => 
+                Swal.fire({
+                    icon: 'success',
+                    text: `El pais ${location.country} se ha registrado correctamente!`,
+                })
+            )
             .catch(e => console.log(e))
             closeModal()
         }

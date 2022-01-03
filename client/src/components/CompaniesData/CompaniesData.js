@@ -1,25 +1,39 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Swal from 'sweetalert2'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { faPen } from '@fortawesome/free-solid-svg-icons'
 
-export const CompaniesData = ({renderData}) => {
-
-    // const {handleCheck, viewContact, delContact} = useContext(SearchContext) //uso del Context para almacenar usuarios TILDADOS
+export const CompaniesData = ({renderData, renderCleanCompanies, editCompanyData}) => {
 
 
-
-    const dltCompany = () => {
-        let response = fetch('./companies', {
-            method: "DELETE",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(renderData)
+    const dltCompany = async (company) => {
+        await Swal.fire({
+            text: `Está seguro que desea eliminar la companía ${company}`,
+            icon: 'question',
+            showDenyButton: true,
+            denyButtonText: `No`,
+            confirmButtonText: 'Si'
+        }).then(result => {
+            if (result.isConfirmed) {
+                let response = fetch('./companies', {
+                    method: "DELETE",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(renderData)
+                })
+                response.then(response => response.json()).then(data => {
+                    Swal.fire({
+                    icon: 'success',
+                    text: `${company} se ha eliminado correctamente`,
+                    })
+                renderCleanCompanies()
+                })
+            }
         })
-        response.then(response => response.json()).then(data => console.log(data))
     }
+
 
     return <>
     <tr>
-        {/* <td><input type="checkbox" className="selectContact" onChange={(evt) => handleCheck(renderData,evt)}/></td> */}
         <td>{renderData.name}</td>
         <td>{renderData.country}</td>
         <td>{renderData.city}</td>
@@ -28,8 +42,8 @@ export const CompaniesData = ({renderData}) => {
         <td className="td8">
             <div className="puntos">...</div>
             <div className="functions">
-                <FontAwesomeIcon className="trashIcon" icon={faTrash} onClick={dltCompany}></FontAwesomeIcon>
-                <FontAwesomeIcon className="penIcon" icon={faPen}></FontAwesomeIcon>
+                <FontAwesomeIcon className="trashIcon" icon={faTrash} onClick={() => dltCompany(renderData.name)}></FontAwesomeIcon>
+                <FontAwesomeIcon className="penIcon" icon={faPen} onClick={() => editCompanyData(renderData)}></FontAwesomeIcon>
             </div>
         </td>
     </tr>

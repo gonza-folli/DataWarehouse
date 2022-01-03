@@ -1,4 +1,5 @@
 import {useContext, useEffect, useState } from 'react'
+import Swal from 'sweetalert2'
 import { LocationContext } from '../../Context/LocationProvider/LocationProvider'
 
 export const AddStateModal = ({closeModal, countryData}) => {
@@ -26,18 +27,26 @@ export const AddStateModal = ({closeModal, countryData}) => {
         setLocation({...location, id_country, [evt.target.name]: evt.target.value})
     }
 
-    function saveState (e) {
+    async function saveState (e) {
         e.preventDefault()
         let findDuplicate = statesDatabase.find( x => x.state.toLowerCase() === location.state.toLowerCase())
         if (findDuplicate) {
-            alert("El estado ya existe")
+            Swal.fire({
+                icon: 'error',
+                text: `El estado/provincia ${location.state} ya se encuentra registrado en el país ${location.country}`,
+            })
         } else {
-            fetch('/location/state', {
+            await fetch('/location/state', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(location)
             })
-            .then(response => response.json()).then(response => console.log(response))
+            .then(response => response.json()).then(data => 
+                Swal.fire({
+                    icon: 'success',
+                    text: `El estado ${location.state} se ha registrado correctamente!`,
+                })
+            )
             .catch(e => console.log(e))
             closeModal()
         }

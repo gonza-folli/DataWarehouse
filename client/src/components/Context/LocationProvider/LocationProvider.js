@@ -1,4 +1,4 @@
-import { createContext, useState} from "react";
+import { createContext} from "react";
 
 export const LocationContext = createContext();
 
@@ -24,19 +24,13 @@ export const LocationProvider = ({children}) => {
         return response.then(data => data.json())
     }
 
-    //para desplegar el Modal Eliminar 1 ciudad
-    const [displayDltCity, setDisplayDltCity] = useState(false)
-    const dltCity = () => setDisplayDltCity(!displayDltCity)
-
-    const [delCityData, setDelCityData] = useState()
-
-    const delLocation = (renderData) => {
-        dltCity()
-        setDelCityData(renderData)
+    const getAvailableCities = function () {
+        let response = fetch(`/location/city`)
+        return response.then(data => data.json())
     }
 
 
-    return <LocationContext.Provider value={{getCountries, getStates, getCities, getSubregions, delLocation, displayDltCity, delCityData, dltCity}}>
+    return <LocationContext.Provider value={{getCountries, getStates, getCities, getSubregions, getAvailableCities}}>
         {children}
     </LocationContext.Provider>
 }

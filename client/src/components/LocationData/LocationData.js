@@ -1,17 +1,46 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { faPen } from '@fortawesome/free-solid-svg-icons'
-import { useContext } from 'react'
-import { LocationContext } from '../Context/LocationProvider/LocationProvider'
+import Swal from 'sweetalert2'
 
 
-export const LocationData = ({renderData}) => {
-    
-    const {delLocation} = useContext(LocationContext)
+export const LocationData = ({renderData, renderCleanCities, openEditModal}) => {
+
+    const dltCity = async (data) => {
+        await Swal.fire({
+            text: `Está seguro que desea eliminar la dirección ${data.address} de la ciudad ${data.city} `,
+            icon: 'question',
+            showDenyButton: true,
+            denyButtonText: `No`,
+            confirmButtonText: 'Si'
+        }).then(result => {
+            if (result.isConfirmed) {
+                let response = fetch('/location/city', {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(renderData)
+                })
+                response.then(response => response.json()).then(x => {
+                    if (x.error === false) {
+                        Swal.fire({
+                            icon: 'success',
+                            text: `El domicilio ${data.address} en la ciudad ${data.city} se ha eliminado correctamente`,
+                        })
+                        renderCleanCities()
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            text: `El domicilio se encuentra asociado a algún contacto o compañía`,
+                        })
+                    }
+                })
+            }
+        })   
+    }
+
 
     return <>
     <tr>
-        <td><input type="checkbox" className="selectContact"/></td>
         <td>{renderData.region}</td>
         <td>{renderData.country}</td>
         <td>{renderData.state}</td>
@@ -20,8 +49,8 @@ export const LocationData = ({renderData}) => {
         <td className="td8">
             <div className="puntos">...</div>
             <div className="functions">
-                <FontAwesomeIcon className="trashIcon" icon={faTrash} onClick={()=> delLocation(renderData)}></FontAwesomeIcon>
-                <FontAwesomeIcon className="penIcon" icon={faPen}></FontAwesomeIcon>
+                <FontAwesomeIcon className="trashIcon" icon={faTrash} onClick={()=> dltCity(renderData)}></FontAwesomeIcon>
+                <FontAwesomeIcon className="penIcon" icon={faPen} onClick={() => openEditModal(renderData)}></FontAwesomeIcon>
             </div>
         </td>
     </tr>

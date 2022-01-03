@@ -32,7 +32,7 @@ CREATE TABLE cities(
 CREATE TABLE companies(
     id_company INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(50) NOT NULL,
-    phone INT NOT NULL,
+    phone BIGINT NOT NULL,
     id_city INT NOT NULL,
     PRIMARY KEY(id_company),
     FOREIGN KEY (id_city) REFERENCES cities(id_city)

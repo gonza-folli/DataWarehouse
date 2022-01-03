@@ -13,17 +13,27 @@ const db_getCountry = () =>
 
 
 const db_getState = (country) =>
-    sequelize.query('SELECT * from states INNER JOIN countries ON countries.id_country = states.id_country where country = ?', {
+    sequelize.query('SELECT * from states INNER JOIN countries ON countries.id_country = states.id_country WHERE country = ?', {
         replacements: country,
         type: sequelize.QueryTypes.SELECT
     })
 
 const db_getCity= (country, state) =>
-    sequelize.query('SELECT * from cities INNER JOIN states ON states.id_state = cities.id_state INNER JOIN countries ON countries.id_country = states.id_country where country = ? AND state = ?', {
+    sequelize.query('SELECT * from cities INNER JOIN states ON states.id_state = cities.id_state INNER JOIN countries ON countries.id_country = states.id_country WHERE country = ? AND state = ?', {
         replacements: country, state,
         type: sequelize.QueryTypes.SELECT
     })
 
+const db_getOriginalCity= (id_city) =>
+    sequelize.query('SELECT * from cities INNER JOIN states ON states.id_state = cities.id_state INNER JOIN countries ON countries.id_country = states.id_country WHERE id_city = ?', {
+        replacements: id_city,
+        type: sequelize.QueryTypes.SELECT
+    })
+
+const db_getAvailableCities= () =>
+    sequelize.query('SELECT * from cities INNER JOIN states ON states.id_state = cities.id_state INNER JOIN countries ON countries.id_country = states.id_country', {
+        type: sequelize.QueryTypes.SELECT
+    })
 
 const db_addCountry= (region, subregion, country) =>
     sequelize.query('INSERT INTO countries (country, region, subregion) VALUES (?, ?, ?)', {
@@ -43,6 +53,19 @@ const db_addCity= (city, address, id_country, id_state) =>
         type: sequelize.QueryTypes.INSERT
     })
 
+const db_editCountryStateCity = (city, address, id_country, id_state, id_city) =>
+    sequelize.query('UPDATE cities SET city = ?, address = ?, id_country = ?, id_state = ? WHERE id_city = ?', {
+        replacements: city, address, id_country, id_state, id_city,
+        type: sequelize.QueryTypes.UPDATE
+    })
+
+const db_editCountryState = (id_country, id_state, id_city) =>
+    sequelize.query('UPDATE cities SET id_country = ?, id_state = ? WHERE id_city = ?', {
+        replacements: id_country, id_state, id_city,
+        type: sequelize.QueryTypes.UPDATE
+    })
+
+
 const db_removeCountry= (id_country) =>
     sequelize.query('DELETE FROM countries WHERE id_country = ?', {
         replacements: id_country,
@@ -61,4 +84,4 @@ const db_removeCity= (id_city) =>
         type: sequelize.QueryTypes.DELETE
     })
 
-module.exports = {db_getSubregion, db_getCountry, db_getState, db_getCity, db_addCountry, db_addState, db_addCity, db_removeCountry, db_removeState, db_removeCity}
+module.exports = {db_getSubregion, db_getCountry, db_getState, db_getCity, db_getOriginalCity, db_addCountry, db_addState, db_addCity, db_editCountryStateCity, db_editCountryState, db_removeCountry, db_removeState, db_removeCity, db_getAvailableCities}

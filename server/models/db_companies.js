@@ -5,10 +5,22 @@ const db_getCompanies = () =>
         type: sequelize.QueryTypes.SELECT
     })
 
+const db_addCompanies = (name, phone , id_city) =>
+    sequelize.query('INSERT INTO companies (name, phone , id_city) VALUES (?, ?, ?)', {
+        replacements: name, phone , id_city,
+        type: sequelize.QueryTypes.INSERT
+    })
+
+const db_editCompanies = (name, phone , id_city, id_company) =>
+    sequelize.query('UPDATE companies SET name = ?, phone = ?, id_city = ? WHERE id_company = ?', {
+        replacements: name, phone , id_city, id_company,
+        type: sequelize.QueryTypes.UPDATE
+    })
+
 const db_removeCompanies = (id_company) =>
     sequelize.query('DELETE from companies where id_company = ?', {
         replacements: id_company,
         type: sequelize.QueryTypes.DELETE
     })
 
-module.exports = {db_getCompanies, db_removeCompanies}
+module.exports = {db_getCompanies, db_removeCompanies, db_addCompanies, db_editCompanies}
