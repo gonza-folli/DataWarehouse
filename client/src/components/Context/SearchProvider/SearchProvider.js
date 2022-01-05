@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import contacts from '../../contacts.json'
+// import contacts from '../../contacts.json'
 
 export const SearchContext = createContext();
 
@@ -8,14 +8,15 @@ export const SearchProvider = ({children}) => {
     const [dataFiltered, setDataFiltered] = useState(null) // Estado para setear los contactos (completos o filtrados)
 
     //FETCH general
-    const getContacts = async function () {
-        let response = await contacts
-        return response
+    const getContacts = function () {
+        let response = fetch('/contacts')
+        return response.then(data => data.json())
     }
+
 
     //setear todos los contactos
     const allContacts = () => {
-        getContacts().then(response => setDataFiltered(response))
+        getContacts().then(response => setDataFiltered(response.data))
     }    
 
     //setear todos los contactos filtrados

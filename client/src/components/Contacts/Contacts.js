@@ -52,7 +52,10 @@ export const Contacts = () => {
         if (dataFiltered) {
             setRenderData(dataFiltered)
         } else {
-            getContacts().then(response => setRenderData(response))
+            getContacts().then(data => {
+                console.log(data.response)
+                setRenderData(data.response)
+            })
         }        
     }, [dataFiltered,getContacts])
 
@@ -61,16 +64,16 @@ export const Contacts = () => {
     const addContact = () => setDisplayAddContact(!displayAddContact)
 
     //para desplegar el menu Exportar Contacto
-    const [displayExportContact, setDisplayExportContact] = useState(false)
-    const exportContact = () => setDisplayExportContact(!displayExportContact)
+    const [displayExpContact, setDisplayExpContact] = useState(false)
+    // const exportContact = () => setDisplayExpContact(!displayExpContact)
 
     //para desplegar el modal Importar Contacto
-    const [displayImportContact, setDisplayImportContact] = useState(false)
-    const importContact = () => setDisplayImportContact(!displayImportContact)
+    const [displayImpContact, setDisplayImpContact] = useState(false)
+    const importContact = () => setDisplayImpContact(!displayImpContact)
 
-    //para desplegar el modal Importar Contacto
-    const [displayDeleteContact, setDisplayDeleteContact] = useState(false)
-    const deleteContact = () => setDisplayDeleteContact(!displayDeleteContact)
+    //para desplegar el modal Eliminar Contacto
+    const [displayDltContact, setDisplayDltContact] = useState(false)
+    const deleteContact = () => setDisplayDltContact(!displayDltContact)
 
 
     return <section className="contactsSection">
@@ -82,28 +85,30 @@ export const Contacts = () => {
             <SearchButton displaySearchWindow={displaySearchWindow} searchWindow={searchWindow}/>
         </div>
         <div className="ContactsPanel"> 
-            <button className='ImportBtn' onClick={importContact} ><FontAwesomeIcon className='ImportIcon' icon={faUpload} /></button>
-            <button className='ExportBtn' onClick={exportContact}>Exportar Contactos</button>
-            <button className='AddBtn' onClick={addContact}>Agregar Contacto</button>
+            <button className='ImportBtn' onClick={() => setDisplayImpContact(!displayImpContact)} ><FontAwesomeIcon className='ImportIcon' icon={faUpload} /></button>
+            <button className='ExportBtn' onClick={() => setDisplayExpContact(!displayExpContact)}>Exportar Contactos</button>
+            <button className='AddBtn' onClick={() => setDisplayAddContact(!displayAddContact)}>Agregar Contacto</button>
         </div>
     </div>
     {displaySearchWindow ? <SearchMenu /> : null}
-    {displayExportContact ? <ExportMenu /> : null}
+    {displayExpContact ? <ExportMenu /> : null}
     {searchData ? <Filters /> : null}
-    {storeContactData.length > 0 ? <div className="selectedContainer">
+    {storeContactData.length > 0 ? 
+        <div className="selectedContainer">
             <div className="selectedQuantity">
                 {storeContactData.length} Seleccionado/s
             </div>
-            <div className="deleteBtn" onClick={deleteContact}>
+            <div className="deleteBtn" onClick={() => setDisplayDltContact(!displayDltContact)}>
                 <FontAwesomeIcon className="trashIcon" icon={faTrash}></FontAwesomeIcon>
                 <h4>Eliminar contactos</h4>
             </div>
-        </div> : null}
+        </div> 
+    : null}
     <ContactsTableHeader renderData={renderData}/>
-    {displayAddContact ? <AddContactModal closeModal={setDisplayAddContact}/> : null}
+    {displayAddContact ? <AddContactModal closeModal={addContact}/> : null}
     {displayEditContact ? <EditContactModal/>: null}
-    {displayImportContact ? <ImportContactModal closeModal={setDisplayImportContact}/> : null}
-    {displayDeleteContact ? <DeleteContactModal closeModal={setDisplayDeleteContact}/> : null}
+    {displayImpContact ? <ImportContactModal closeModal={importContact}/> : null}
+    {displayDltContact ? <DeleteContactModal closeModal={deleteContact}/> : null}
     {displayDelSingleContact ? <DeleteContactModal closeModal={deleteSingleContact}/> : null}
     
     </section>

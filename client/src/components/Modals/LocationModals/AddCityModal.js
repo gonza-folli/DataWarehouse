@@ -116,8 +116,8 @@ export const AddCityModal = ({closeModal, countryData, editData}) => {
     //actualizar listados de paises, provincias
     useEffect(() => {
         if (editData) {
-            console.log(newLocation)
-            console.log(editData)
+            // console.log(newLocation)
+            // console.log(editData)
             if (newLocation.country === editData.country && newLocation.state === editData.state && newLocation.city === editData.city) {
                 getStates(newLocation.country).then(response => setRenderStates(response))
             }
@@ -126,10 +126,7 @@ export const AddCityModal = ({closeModal, countryData, editData}) => {
                 if (newLocation.country !== "" ) { 
                     getStates(newLocation.country).then(response => setRenderStates(response))
                 }
-            } 
-            // if (newLocation.state !== "" && newLocation.city !== "") {
-            //     getCities(newLocation.country, newLocation.state).then(response => setCitiesDatabase(response))
-            // }
+            }
         }
     }, [newLocation, getStates, editData, location])
     
@@ -154,12 +151,20 @@ export const AddCityModal = ({closeModal, countryData, editData}) => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newLocation)
             })
-            .then(response => response.json()).then(response => 
-                Swal.fire({
-                    icon: 'success',
-                    text: `La dirección ${location.address} en la ciudad ${location.city} se ha registrado correctamente`,
-                })
-                )
+            .then(response => response.json()).then(data => {
+                if (data.error === false) {
+                    Swal.fire({
+                        icon: 'success',
+                        text: `La dirección ${newLocation.address} en la ciudad ${newLocation.city} se ha modificado correctamente`,
+                    })
+                    closeModal()
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        text: `${data.message}`,
+                    })
+                }
+            })
             .catch(e => console.log(e))
             closeModal()
         }

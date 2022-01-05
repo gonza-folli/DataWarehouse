@@ -14,9 +14,9 @@ export const ContactData = ({renderData}) => {
     <tr>
         <td><input type="checkbox" className="selectContact" onChange={(evt) => handleCheck(renderData,evt)}/></td>
         <td className="td2">
-            <div className="profilePhotoDiv"><img className="profilePhoto" src={renderData.image} alt="profilePhoto"/></div>
+            <div className="profilePhotoDiv"><img className="profilePhoto" src={renderData.profile_photo} alt="profilePhoto"/></div>
             <div className="profileData">
-                <div className="profileName">{renderData.firstname} {renderData.lastname}</div>
+                <div className="profileName">{renderData.name} {renderData.lastname}</div>
                 <div className="profileEmail">{renderData.email}</div>
             </div>
         </td>
@@ -26,9 +26,9 @@ export const ContactData = ({renderData}) => {
                 <div className="profileRegion">{renderData.region}</div>
             </div>
         </td>
-        <td>{renderData.company}</td>
-        <td>{renderData.charge}</td>
-        <td>{renderData.channel}</td>
+        <td>{renderData.company_name}</td>
+        <td>{renderData.position}</td>
+        <td>{renderData.channels.map(x => <div key={x.name}>{x.name} - </div> )}</td>
         <td className="td7"><div className="interestTd">
             <div>{renderData.interest}%</div>
             <ProgressBar done={renderData.interest}/>
