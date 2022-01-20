@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router()
 
 const {getLocation} = require('../controllers/location/getLocation')
+const {getAllSubregions} = require('../controllers/location/getAllSubregions')
 const {editLocation} = require('../controllers/location/editLocation')
 const {addCountry} = require('../controllers/location/addCountry')
 const {removeCountry} = require('../controllers/location/removeCountry')
@@ -13,6 +14,7 @@ const {removeCity} = require('../controllers/location/removeCity')
 
 
 router.get('/', getLocation)
+router.get('/subregions', getAllSubregions)
 router.put('/', editLocation)
 router.post('/country', addCountry)
 router.delete('/country', removeCountry)

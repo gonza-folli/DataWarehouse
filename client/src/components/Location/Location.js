@@ -92,8 +92,7 @@ export const Location = () => {
     const openEditModal = (data) => {
         setDisplayAddCity(true)
         setCityEditData(data)
-    } 
-        
+    }
 
     return <section className='locationSection'>
     <h1 className="title">Países - Regiones - Ciudades</h1>

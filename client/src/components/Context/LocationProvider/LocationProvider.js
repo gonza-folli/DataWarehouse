@@ -9,6 +9,16 @@ export const LocationProvider = ({children}) => {
         return response.then(data => data.json())
     }
 
+    const getAllSubregions = function () {
+        let response = fetch(`/location/subregions`)
+        return response.then(data => data.json())
+    }
+
+    const getCountriesFromSubreg = function (subreg) {
+        let response = fetch(`/location/subregions?subregion=${subreg}`)
+        return response.then(data => data.json())
+    }
+
     const getCountries = function () {
         let response = fetch('/location')
         return response.then(data => data.json())
@@ -24,13 +34,24 @@ export const LocationProvider = ({children}) => {
         return response.then(data => data.json())
     }
 
+    const getCitiesFromCountry = function (id_country) {
+        let response = fetch(`/location?id_country=${id_country}`)
+        return response.then(data => data.json())
+    }
+
+
     const getAvailableCities = function () {
         let response = fetch(`/location/city`)
         return response.then(data => data.json())
     }
 
+    const getAddressFromCities = function (city) {
+        let response = fetch(`/location?city=${city}`)
+        return response.then(data => data.json())
+    }
 
-    return <LocationContext.Provider value={{getCountries, getStates, getCities, getSubregions, getAvailableCities}}>
+
+    return <LocationContext.Provider value={{getCountries, getAllSubregions, getCountriesFromSubreg, getStates, getCities, getSubregions, getCitiesFromCountry, getAvailableCities, getAddressFromCities}}>
         {children}
     </LocationContext.Provider>
 }

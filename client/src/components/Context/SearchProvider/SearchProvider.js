@@ -1,5 +1,4 @@
-import { createContext, useEffect, useState } from "react";
-// import contacts from '../../contacts.json'
+import { createContext, useState} from "react";
 
 export const SearchContext = createContext();
 
@@ -17,40 +16,12 @@ export const SearchProvider = ({children}) => {
     //setear todos los contactos
     const allContacts = () => {
         getContacts().then(response => setDataFiltered(response.data))
-    }    
-
-    //setear todos los contactos filtrados
-    const renderResults = () => {
-        getContacts().then(response => {
-            const filtered = response.filter(x => 
-                (!searchData.name ||  x.name.toLowerCase().indexOf(searchData.name.toLowerCase()) !== -1) && 
-                (!searchData.charge ||  x.charge.toLowerCase().indexOf(searchData.charge.toLowerCase()) !== -1) && 
-                (!searchData.country || x.country === searchData.country) && 
-                (!searchData.company || x.company === searchData.company) &&
-                (!searchData.channel || x.channel === searchData.channel) &&
-                (!searchData.interest || x.interest === searchData.interest))
-            setDataFiltered(filtered)
-        })
     }
 
 //____________________________________________________________________________________________________________
     //Aplicar Filtros de Búsqueda en el menú
-    const [searchData, setSearchData] = useState() //seteo los filtros a aplicar en la búsqueda
-    const filterChange = (event) => {
-        setSearchData(prevState => ({...prevState, [event.target.name]: event.target.value}))
-    }
+    const [searchData, setSearchData] = useState(null) //seteo los filtros a aplicar en la búsqueda
 
-    //Limpiar TODOS los Filtros de Búsqueda en el menú
-    const clearSearch = () => {
-        setSearchData(null)
-    }
-
-    //Limpiar UN Filtro de Búsqueda en el menú
-    const clearFilter = (filter) => {
-        let obj = searchData
-        let {[filter]: _, ...result } = obj
-        setSearchData(result)
-    }
 //____________________________________________________________________________________________________________
 
     //Creo un estado para almacenar los usuarios TILDADOS
@@ -61,7 +32,7 @@ export const SearchProvider = ({children}) => {
         const contactToAdd = [...storeContactData, contact]
         setStoreContactData(contactToAdd)
         } else {
-            const contactToRemove = storeContactData.filter(x => x.id !== contact.id)
+            const contactToRemove = storeContactData.filter(x => x.id_contact !== contact.id_contact)
             setStoreContactData(contactToRemove)
         }
     }
@@ -91,26 +62,10 @@ export const SearchProvider = ({children}) => {
     }
 
 
-//____________________________________________________________________________________________________________
-    useEffect(()=> {
-            if (searchData) {
-                getContacts().then(response => {
-                    const filtered = response.filter(x => 
-                        (!searchData.name ||  x.name.toLowerCase().indexOf(searchData.name.toLowerCase()) !== -1) && 
-                        (!searchData.charge ||  x.charge.toLowerCase().indexOf(searchData.charge.toLowerCase()) !== -1) && 
-                        (!searchData.country || x.country === searchData.country) && 
-                        (!searchData.company || x.company === searchData.company) &&
-                        (!searchData.channel || x.channel === searchData.channel) &&
-                        (!searchData.interest || x.interest === searchData.interest))
-                    setDataFiltered(filtered)
-                })
-            }
-    }, [searchData])
-
-    return <SearchContext.Provider value={{getContacts, searchData, filterChange, renderResults, 
-            dataFiltered, clearSearch, allContacts, clearFilter, handleCheck, storeContactData, 
+    return <SearchContext.Provider value={{getContacts, 
+            dataFiltered, allContacts, searchData, setSearchData, handleCheck, storeContactData, 
             viewContact, displayEditContact, editContactData, editContact, 
-            delContact, displayDelSingleContact, delContactData, deleteSingleContact}}>
+            delContact, displayDelSingleContact, delContactData, setDelContactData, setDisplayDelSingleContact}}>
         {children}
     </SearchContext.Provider>
 }

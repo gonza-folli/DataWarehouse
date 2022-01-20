@@ -88,7 +88,7 @@ label {
 }
 
 .modalBody {
-    height: 263px;
+    /* height: 263px; */
     width: 80%;
     background-color: white;
     padding-top: 100px;
@@ -97,15 +97,31 @@ label {
     display: flex;
     justify-content: space-evenly;
 }
+.channelDataHeader {
+    display: flex;
+    margin: 0 5%;
+    justify-content: flex-start;
+}
+.channelDataHeader p {
+    margin: 5% 13.5% 0 0;
+}
 .channelData {
     display: flex;
-    margin: 43px 0 0 0;
+    margin: 10px 0 0 0;
     justify-content: flex-start;
 }
 .channelData div, .channelData label {
     margin: 0 0 0 5%;
 }
 
+.modalHeader select {
+    border: 1px #CCCCCC solid;
+    height: 35.5px;
+    width: 190px;
+    font-family: 'Open Sans';
+    padding: 5px;
+    margin-top: 5px;
+}
 .modalBody select {
     border: 1px #CCCCCC solid;
     height: 35.5px;

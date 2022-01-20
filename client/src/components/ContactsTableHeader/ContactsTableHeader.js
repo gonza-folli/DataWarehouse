@@ -1,7 +1,7 @@
 import { ContactData } from "../ContactData/ContactData"
 import './ContactsTableHeader.css'
 
-export const ContactsTableHeader = ({renderData}) => {
+export const ContactsTableHeader = ({renderData, openEditModal}) => {
 
     return <>
     {renderData ?
@@ -20,7 +20,7 @@ export const ContactsTableHeader = ({renderData}) => {
             </thead>
             <tbody>
             {renderData ? renderData.map((data)=> 
-                <ContactData renderData={data} key={data.id_contact}/>) : <tr className="loading"></tr>}
+                <ContactData renderData={data} openEditModal={openEditModal} key={data.id_contact}/>) : <tr className="loading"></tr>}
             </tbody>
         </table>
     : <div className="loadingFather"><div className="loading"></div></div> }

@@ -6,11 +6,21 @@ const db_getSubregion = (region) =>
         type: sequelize.QueryTypes.SELECT
     })
 
+const db_getAllSubregions = () =>
+    sequelize.query('SELECT subregion from countries GROUP BY subregion', {
+        type: sequelize.QueryTypes.SELECT
+    })
+
 const db_getCountry = () =>
     sequelize.query('SELECT * from countries', {
         type: sequelize.QueryTypes.SELECT
     })
 
+const db_getCountriesFromSubreg = (subreg) =>
+    sequelize.query('SELECT * from countries WHERE subregion = ?', {
+        replacements: subreg,
+        type: sequelize.QueryTypes.SELECT
+    })
 
 const db_getState = (country) =>
     sequelize.query('SELECT * from states INNER JOIN countries ON countries.id_country = states.id_country WHERE country = ?', {
@@ -21,6 +31,18 @@ const db_getState = (country) =>
 const db_getCity= (country, state) =>
     sequelize.query('SELECT * from cities INNER JOIN states ON states.id_state = cities.id_state INNER JOIN countries ON countries.id_country = states.id_country WHERE country = ? AND state = ?', {
         replacements: country, state,
+        type: sequelize.QueryTypes.SELECT
+    })
+
+const db_getCitiesFromCountry = (id_country) =>
+    sequelize.query('SELECT * from cities WHERE id_country = ? GROUP BY city', {
+        replacements: id_country,
+        type: sequelize.QueryTypes.SELECT
+    })
+
+const db_getAddressFromCities = (city) =>
+    sequelize.query('SELECT * from cities WHERE city = ?', {
+        replacements: city,
         type: sequelize.QueryTypes.SELECT
     })
 
@@ -84,4 +106,4 @@ const db_removeCity= (id_city) =>
         type: sequelize.QueryTypes.DELETE
     })
 
-module.exports = {db_getSubregion, db_getCountry, db_getState, db_getCity, db_getOriginalCity, db_addCountry, db_addState, db_addCity, db_editCountryStateCity, db_editCountryState, db_removeCountry, db_removeState, db_removeCity, db_getAvailableCities}
+module.exports = {db_getSubregion, db_getAllSubregions, db_getCountriesFromSubreg, db_getCountry, db_getState, db_getCity, db_getCitiesFromCountry, db_getAddressFromCities, db_getOriginalCity, db_addCountry, db_addState, db_addCity, db_editCountryStateCity, db_editCountryState, db_removeCountry, db_removeState, db_removeCity, db_getAvailableCities}

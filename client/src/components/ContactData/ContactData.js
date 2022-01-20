@@ -6,9 +6,9 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { faPen } from '@fortawesome/free-solid-svg-icons'
 import './ContactData.css'
 
-export const ContactData = ({renderData}) => {
+export const ContactData = ({renderData, openEditModal}) => {
 
-    const {handleCheck, viewContact, delContact} = useContext(SearchContext) //uso del Context para almacenar usuarios TILDADOS
+    const {handleCheck, delContact} = useContext(SearchContext) //uso del Context para almacenar usuarios TILDADOS
 
     return <>
     <tr>
@@ -38,7 +38,7 @@ export const ContactData = ({renderData}) => {
             <div className="puntos">...</div>
             <div className="functions">
                 <FontAwesomeIcon className="trashIcon" icon={faTrash} onClick={() => delContact(renderData)}></FontAwesomeIcon>
-                <FontAwesomeIcon className="penIcon" icon={faPen} onClick={() => viewContact(renderData)}></FontAwesomeIcon>
+                <FontAwesomeIcon className="penIcon" icon={faPen} onClick={() => openEditModal(renderData)}></FontAwesomeIcon>
             </div>
         </td>
     </tr>

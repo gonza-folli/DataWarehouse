@@ -12,56 +12,91 @@ import { ExportMenu } from '../ExportMenu/ExportMenu'
 import { AddContactModal } from '../Modals/ContactModals/AddContactModal'
 import { ImportContactModal } from '../Modals/ContactModals/ImportContactModal'
 import { DeleteContactModal } from '../Modals/ContactModals/DeleteContactModal'
-import { EditContactModal } from '../Modals/ContactModals/EditContactModal'
+// import { EditContactModal } from '../Modals/ContactModals/EditContactModal'
 import './Contacts.css'
 
 
 export const Contacts = () => {
 
-    //para desplegar el buscador por categoria
-    const [displaySearchWindow, setDisplaySearchWindow] = useState(false)
-    const searchWindow = () => setDisplaySearchWindow(!displaySearchWindow)
-
-    const {getContacts, dataFiltered, clearSearch, searchData, allContacts, storeContactData, displayEditContact, displayDelSingleContact, deleteSingleContact} = useContext(SearchContext)
+    const {getContacts, searchData, storeContactData, displayDelSingleContact, setDelContactData, setDisplayDelSingleContact} = useContext(SearchContext)
 
     //Estado para renderizar los contactos
     const [renderData, setRenderData] = useState(null)
 
+    //Estado para manejar internamente la DB y evitar hacer muchas consultas en SQL
+    const [contactDatabase, setContactDatabase] = useState(null)
 
-//____________BUSCADOR POR NOMBRE______________________________________________________________________________________________________________________
+    //Estado para editar contacto
+    const [contactEditData, setContactEditData] = useState(null)
+
+    //seteo INICIAL para fetchear TODOS los contactos
+    useEffect(() => {
+        const response = fetch('/contacts')
+        response.then(data => data.json()).then(data => {
+            setRenderData(data.response) //manejar estado de renderizado
+            setContactDatabase(data.response) //manejar array internamente con todos los datos de contactos ya fetcheados
+        })
+    }, [])
+
+    //Estado para renderizar opciones elegidas del buscador
+    const [filters, setFilters] = useState(null)
+
+    //Estado para desplegar el BUSCADOR AVANZADO
+    const [displaySearchWindow, setDisplaySearchWindow] = useState(false)
+    const searchWindow = () =>  { //se activa del boton buscar y se pasa por props el seteo de contactos para renderizar
+        setDisplaySearchWindow(!displaySearchWindow)
+        setFilters(searchData)
+        setRenderData(dataFiltered)
+    }
+
+    //Estado para traer el resultado del BUSCADOR AVANZADO
+    const [dataFiltered, setDataFiltered] = useState()
+
+    //seteo para renderizar los contactos filtrados(BUSCADOR AVANZADO) o completos
+    useEffect(()=> {
+        // console.log(storeContactData)
+            if (filters) {
+                const filtered = contactDatabase.filter(x => 
+                    (!filters.name ||  x.name.toLowerCase().indexOf(filters.name.toLowerCase()) !== -1 || x.lastname.toLowerCase().indexOf(filters.name.toLowerCase()) !== -1) && 
+                    (!filters.position ||  x.position.toLowerCase().indexOf(filters.position.toLowerCase()) !== -1) && 
+                    (!filters.country || x.country === filters.country) && 
+                    (!filters.company_name || x.company_name === filters.company_name) &&
+                    (!filters.channels || x.channels.map(x => x.name).toString() === filters.channels) &&
+                    (!parseInt(filters.interest) || x.interest === parseInt(filters.interest)))
+                setRenderData(filtered)
+                }
+    }, [contactDatabase, filters])
+
+
+//____________BUSCADOR SIMPLE POR NOMBRE/APELLIDO/COMPANIA/PAIS___________________________________________________________________________
     const [searchTerm, setSearchTerm] = useState(""); //para filtrar por nombre sólamente
 
-    //seteo la busqueda por nombre solamente
     useEffect(() => {
-        if (searchTerm !== "") {
-            getContacts()
-            .then(response => {
-            let filtrado = response.filter(e => {
-                return (e.firstname.toLowerCase().includes(searchTerm.toLowerCase()) || e.lastname.toLowerCase().includes(searchTerm.toLowerCase()))
+        if (searchTerm !== "" ) {
+            let filtrado = contactDatabase.filter(x => {
+                return (x.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                x.lastname.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                x.company_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                x.country.toLowerCase().includes(searchTerm.toLowerCase())
+                )
             })
             setRenderData(filtrado)
-            })
-        // } else {
-        //     getContacts().then(response => setRenderData(response))
+        } else if (!searchData){
+            setRenderData(contactDatabase)
         }
-    }, [searchTerm, getContacts, allContacts])
-//__________________________________________________________________________________________________________________________________________________
-
-    //seteo para renderizar los contactos filtrados o completos
-    useEffect(() => {
-        if (dataFiltered) {
-            setRenderData(dataFiltered)
-        } else {
-            getContacts().then(data => {
-                console.log(data.response)
-                setRenderData(data.response)
-            })
-        }        
-    }, [dataFiltered,getContacts])
+    }, [searchTerm, contactDatabase, searchData])
+//___________________________________________________________________________________________________________________________________________
 
     //para desplegar el Modal Agregar Contacto
     const [displayAddContact, setDisplayAddContact] = useState(false)
-    const addContact = () => setDisplayAddContact(!displayAddContact)
+    const addContact = () => {
+        setContactEditData(null)
+        setDisplayAddContact(!displayAddContact)
+        getContacts().then(data => {
+            setRenderData(data.response)
+            setContactDatabase(data.response)
+        })
+    }
 
     //para desplegar el menu Exportar Contacto
     const [displayExpContact, setDisplayExpContact] = useState(false)
@@ -73,15 +108,29 @@ export const Contacts = () => {
 
     //para desplegar el modal Eliminar Contacto
     const [displayDltContact, setDisplayDltContact] = useState(false)
-    const deleteContact = () => setDisplayDltContact(!displayDltContact)
+    const deleteContact = () => {
+        setDelContactData(null)
+        setDisplayDelSingleContact(false)
+        setDisplayDltContact(false)
+        getContacts().then(data => {
+            setRenderData(data.response)
+            setContactDatabase(data.response)
+        })
+    }
+
+    //funcion editar contacto
+    const openEditModal = (data) => {
+        setDisplayAddContact(true)
+        setContactEditData(data)
+    }
 
 
     return <section className="contactsSection">
     <h1 className="title">Contactos</h1>
     <div className="ContactsFunctions">
         <div className="SearchPanel"> 
-            <input className='SearchInput' onChange={(event)=> setSearchTerm(event.target.value)}></input>
-            <button className='DownBtn' onClick={() => {searchWindow(); clearSearch()}}><FontAwesomeIcon className='DownIcon' icon={faCaretDown} /></button>
+            <input className='SearchInput' placeholder="Ingrese NOMBRE o APELLIDO o COMPAÑÍA o PAÍS"onChange={(event)=> setSearchTerm(event.target.value)}></input>
+            <button className='DownBtn' onClick={() => setDisplaySearchWindow(!displaySearchWindow)}><FontAwesomeIcon className='DownIcon' icon={faCaretDown} /></button>
             <SearchButton displaySearchWindow={displaySearchWindow} searchWindow={searchWindow}/>
         </div>
         <div className="ContactsPanel"> 
@@ -90,9 +139,9 @@ export const Contacts = () => {
             <button className='AddBtn' onClick={() => setDisplayAddContact(!displayAddContact)}>Agregar Contacto</button>
         </div>
     </div>
-    {displaySearchWindow ? <SearchMenu /> : null}
+    {displaySearchWindow ? <SearchMenu contactDatabase={contactDatabase} setDataFiltered={setDataFiltered}/> : null}
     {displayExpContact ? <ExportMenu /> : null}
-    {searchData ? <Filters /> : null}
+    {filters ? <Filters filters={filters} setFilters={setFilters}/> : null}
     {storeContactData.length > 0 ? 
         <div className="selectedContainer">
             <div className="selectedQuantity">
@@ -104,12 +153,12 @@ export const Contacts = () => {
             </div>
         </div> 
     : null}
-    <ContactsTableHeader renderData={renderData}/>
-    {displayAddContact ? <AddContactModal closeModal={addContact}/> : null}
-    {displayEditContact ? <EditContactModal/>: null}
+    <ContactsTableHeader renderData={renderData} openEditModal={openEditModal}/>
+    {displayAddContact ? <AddContactModal contactDatabase={contactDatabase} closeModal={addContact} editData={contactEditData}/> : null}
+    {/* {displayEditContact ? <EditContactModal/>: null} */}
     {displayImpContact ? <ImportContactModal closeModal={importContact}/> : null}
     {displayDltContact ? <DeleteContactModal closeModal={deleteContact}/> : null}
-    {displayDelSingleContact ? <DeleteContactModal closeModal={deleteSingleContact}/> : null}
+    {displayDelSingleContact ? <DeleteContactModal closeModal={deleteContact}/> : null}
     
     </section>
 }

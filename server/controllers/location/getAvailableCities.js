@@ -7,6 +7,7 @@ const getAvailableCities = async function (req, res) {
     try{
         let dbRes = await db_getAvailableCities()
         response = new Response(false,200,'Las ciudades disponibles son:', dbRes)
+        console.log(dbRes)
         res.status(200).send(response)
 
     } catch(e) {

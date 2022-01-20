@@ -1,4 +1,3 @@
-const { json } = require('sequelize/dist');
 const {db_getContacts} = require('../../models/db_contacts');
 const Response = require('../../utilities/response');
 

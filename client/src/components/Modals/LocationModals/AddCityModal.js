@@ -22,7 +22,6 @@ export const AddCityModal = ({closeModal, countryData, editData}) => {
     })
 
     useEffect(() => {
-        // console.log(location)
         if (location.country !== "" && location.state === "") {
             getStates(location.country).then(response => setRenderStates(response))
         }
