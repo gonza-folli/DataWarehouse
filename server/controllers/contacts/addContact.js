@@ -58,17 +58,21 @@ const addContact = async function (req, res) {
                 } else {
                     let response = new Response(true,400,'Debe ingresar al menos 1 canal de contacto')
                     res.status(400).send(response)
+                    return
                 }
                 await channelInfo.map(x => db_addContactChannels([insertContact[0], x]))
                 let response = new Response(false, 200, `Contacto ${name} ${lastname} agregado correctamente`)
                 res.status(200).send(response)
+                return
             } else {
                 let response = new Response(true,400,'El usuario que desea ingresar ya existe en la Base de Datos')
                 res.status(400).send(response)
+                return
             }
         } else {
             let response = new Response(true,400,'Debe Completar TODOS los datos')
             res.status(400).send(response)
+            return
         }
     }
     catch (e) {

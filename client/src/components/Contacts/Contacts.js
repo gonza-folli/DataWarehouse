@@ -90,12 +90,12 @@ export const Contacts = () => {
     //para desplegar el Modal Agregar Contacto
     const [displayAddContact, setDisplayAddContact] = useState(false)
     const addContact = () => {
-        setContactEditData(null)
         setDisplayAddContact(!displayAddContact)
         getContacts().then(data => {
             setRenderData(data.response)
             setContactDatabase(data.response)
         })
+        setContactEditData(null)
     }
 
     //para desplegar el menu Exportar Contacto
@@ -154,8 +154,7 @@ export const Contacts = () => {
         </div> 
     : null}
     <ContactsTableHeader renderData={renderData} openEditModal={openEditModal}/>
-    {displayAddContact ? <AddContactModal contactDatabase={contactDatabase} closeModal={addContact} editData={contactEditData}/> : null}
-    {/* {displayEditContact ? <EditContactModal/>: null} */}
+    {displayAddContact ? <AddContactModal closeModal={addContact} editData={contactEditData}/> : null}
     {displayImpContact ? <ImportContactModal closeModal={importContact}/> : null}
     {displayDltContact ? <DeleteContactModal closeModal={deleteContact}/> : null}
     {displayDelSingleContact ? <DeleteContactModal closeModal={deleteContact}/> : null}

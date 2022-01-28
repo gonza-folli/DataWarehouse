@@ -19,7 +19,7 @@ INSERT INTO channels (name,  user_account, preferences) VALUES
 ('Whatsapp', '3564334501', 'No molestar' ),
 ('Instagram', 'gonzafolli', 'Canal favorito' ),
 ('Facebook', 'martincravero', 'Sin preferencia' ),
-('instagram', 'm.cravero', 'Canal favorito' ),
+('Instagram', 'm.cravero', 'Canal favorito' ),
 ('Twitter', 'fedekuibida', 'No molestar' ),
 ('Instagram', 'gasnobs', 'Canal favorito' ),
 ('Whatsapp', '3564253647', 'Sin preferencia' ),

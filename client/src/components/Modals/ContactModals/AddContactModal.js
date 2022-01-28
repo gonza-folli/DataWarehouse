@@ -7,7 +7,7 @@ import { ProgressBar} from '../../ProgressBar/ProgressBar.js'
 import { LocationContext } from '../../Context/LocationProvider/LocationProvider'
 
 
-export const AddContactModal = ({contactDatabase, closeModal, editData}) => {
+export const AddContactModal = ({closeModal, editData}) => {
 
     const {getAllSubregions, getCountriesFromSubreg, getCitiesFromCountry, getAddressFromCities} = useContext(LocationContext)
 
@@ -29,9 +29,9 @@ export const AddContactModal = ({contactDatabase, closeModal, editData}) => {
         console.log(contactData)
     }, [contactData])
 
-    // useEffect(() => {
-    //     console.log(editData)
-    // }, [editData])
+    useEffect(() => {
+        console.log(editData)
+    }, [editData])
 
     //funcion para activar siguiente campo
     const [countryDisabled, setCountryDisabled] = useState(true)
@@ -127,7 +127,11 @@ export const AddContactModal = ({contactDatabase, closeModal, editData}) => {
     const handleAddressChange = (evt) => {
         const selectedIndex = evt.target.options.selectedIndex
         const id_city = (evt.target.options[selectedIndex].getAttribute('data-key'))
-        setContactData({...contactData, id_city, [evt.target.name]: evt.target.value})
+        if (editData) { 
+            setNewContact({...newContact, id_city, [evt.target.name]: evt.target.value})
+        } else {
+            setContactData({...contactData, id_city, [evt.target.name]: evt.target.value})
+        }
     }
 
     //funciones selectores de CANALES
@@ -153,9 +157,14 @@ export const AddContactModal = ({contactDatabase, closeModal, editData}) => {
         facebookUser: "",
     })
 
+    const [newChannelData, setNewChannelData] = useState()
 
     const handleChannelChange = (evt) => {
-        setChannelData({...channelData, [evt.target.name]: evt.target.value})
+        if (editData) {
+                setNewChannelData({...newChannelData, [evt.target.name]: evt.target.value})
+        } else {
+            setChannelData({...channelData, [evt.target.name]: evt.target.value})
+        }
     }
 
     //funciones GUARDAR CONTACTO
@@ -179,6 +188,7 @@ export const AddContactModal = ({contactDatabase, closeModal, editData}) => {
                     icon: 'error',
                     text: `${data.message}`,
                 })
+                // closeModal()
             }
         })
         .catch(e => console.log(e))
@@ -204,9 +214,13 @@ export const AddContactModal = ({contactDatabase, closeModal, editData}) => {
         state: "",
         subregion: ""
     })
+    
+    // useEffect(() => {
+    //     console.log(channelData)
+    //     console.log(newChannelData)
+    // }, [channelData, newChannelData])
 
     useEffect(() => {
-        console.log(editData)
         if (editData) {
             setNewContact({
                 address: editData.address,
@@ -231,8 +245,51 @@ export const AddContactModal = ({contactDatabase, closeModal, editData}) => {
     }, [editData])
 
     useEffect(() => {
+        if (editData) {
+            setNewChannelData({
+                whatsappUser: editData.channels.filter(x => x.name === "Whatsapp").map(y => y.user_account).toString(),
+                instagramUser: editData.channels.filter(x => x.name === "Instagram").map(y => y.user_account).toString(),
+                twitterUser: editData.channels.filter(x => x.name === "Twitter").map(y => y.user_account).toString(),
+                facebookUser: editData.channels.filter(x => x.name === "Facebook").map(y => y.user_account).toString(),
+                whatsappPref: editData.channels.filter(x => x.name === "Whatsapp").map(y => y.preferences).toString(),
+                instagramPref: editData.channels.filter(x => x.name === "Instagram").map(y => y.preferences).toString(),
+                twitterPref: editData.channels.filter(x => x.name === "Twitter").map(y => y.preferences).toString(),
+                facebookPref: editData.channels.filter(x => x.name === "Facebook").map(y => y.preferences).toString()
+            })
+        }
+    }, [editData])
+
+    useEffect(() => {
         console.log(newContact)
     }, [newContact])
+
+    //funcion EDITAR CONTACTO
+    async function changeContact () {
+    // e.preventDefault()
+    let contactToAdd = {...newContact, newChannelData}
+    await fetch('/contacts', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(contactToAdd)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error === false) {
+            Swal.fire({
+                icon: 'success',
+                text: `${data.message}`,
+            })
+            closeModal()
+        } else {
+            Swal.fire({
+                icon: 'error',
+                text: `${data.message}`,
+            })
+            // closeModal()
+        }
+    })
+    .catch(e => console.log(e))
+}
 
 
     return <div className="contactModal">
@@ -260,7 +317,7 @@ export const AddContactModal = ({contactDatabase, closeModal, editData}) => {
                 </label>
                 </>
             : <>
-                <label>Nombre *<input type="text" name="city" onChange={(evt) => handleChange(evt)} required></input></label>
+                <label>Nombre *<input type="text" name="name" onChange={(evt) => handleChange(evt)} required></input></label>
                 <label>Apellido *<input type="text" name="lastname" onChange={(evt) => handleChange(evt)} required></input></label>
                 <label>Cargo *<input type="text" name="position" onChange={(evt) => handleChange(evt)} required></input></label>
                 <label>Email *<input type="text" name="email" onChange={(evt) => handleChange(evt)} required></input></label>
@@ -376,15 +433,51 @@ export const AddContactModal = ({contactDatabase, closeModal, editData}) => {
                     </select>
                 </div>
                 <label>
-                    {editData.channels.map(y => (y.name === x.name) ? <input type="text" value={y.user_account} name={x.userAccount} placeholder="@ejemplo" onChange={(evt) => handleChannelChange(evt)}></input> 
-                    : null)}
-                </label>
+                    {!newChannelData ?
+                    <input type="text" name={x.userAccount} placeholder="@ejemplo" onChange={(evt) => handleChannelChange(evt)}></input>
+                    : null}
+                    {newChannelData ?
+                        x.userAccount === "whatsappUser" ? 
+                            <input type="text" value={newChannelData.whatsappUser} key={x.userAccount} name={x.userAccount} placeholder="@ejemplo" onChange={(evt) => handleChannelChange(evt)}></input>
+                            : null
+                    : null}
+                    {newChannelData ?
+                        x.userAccount === "instagramUser" ? 
+                            <input type="text" value={newChannelData.instagramUser} key={x.userAccount} name={x.userAccount} placeholder="@ejemplo" onChange={(evt) => handleChannelChange(evt)}></input>
+                            : null
+                    : null}
+                    {newChannelData ?
+                        x.userAccount === "twitterUser" ? 
+                            <input type="text" value={newChannelData.twitterUser} key={x.userAccount} name={x.userAccount} placeholder="@ejemplo" onChange={(evt) => handleChannelChange(evt)}></input>
+                            : null
+                    : null}
+                    {newChannelData ?
+                        x.userAccount === "facebookUser" ? 
+                            <input type="text" value={newChannelData.facebookUser} key={x.userAccount} name={x.userAccount} placeholder="@ejemplo" onChange={(evt) => handleChannelChange(evt)}></input>
+                            : null
+                    : null}
+                    </label>
                 <div>
+                    {editData ?
+                        editData.channels.find(y => (y.name === x.name)) ?
+                            <select name={x.preferences} onChange={(evt) => handleChannelChange(evt)}>
+                                <option>{editData.channels.filter(y => (y.name === x.name)).map(z => z.preferences)}</option>
+                                <option>Sin preferencia</option>
+                                <option>Canal Favorito</option>
+                                <option>No Molestar</option>
+                            </select>
+                            : 
+                            <select name={x.preferences} onChange={(evt) => handleChannelChange(evt)}>
+                                <option>Sin preferencia</option>
+                                <option>Canal Favorito</option>
+                                <option>No Molestar</option>
+                            </select>
+                    :
                     <select name={x.preferences} onChange={(evt) => handleChannelChange(evt)}>
                         <option>Sin preferencia</option>
                         <option>Canal Favorito</option>
                         <option>No Molestar</option>
-                    </select>
+                    </select> }
                 </div>
             </div>
         )}
@@ -392,7 +485,10 @@ export const AddContactModal = ({contactDatabase, closeModal, editData}) => {
     <div className="modalFooter">
         <div className="modalActions">
             <button className="cancelBtn" onClick={() =>closeModal()}>Cancelar</button>
-            <button className="saveBtn" onClick={()=> saveContact()}>Guardar contacto</button>
+            {editData ? 
+            <button className="saveBtn" onClick={()=> changeContact()}>Guardar cambios</button> 
+            : 
+            <button className="saveBtn" onClick={()=> saveContact()}>Guardar contacto</button>}
         </div>
     </div>
     </div>
