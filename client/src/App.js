@@ -5,6 +5,8 @@ import { LocationProvider } from './components/Context/LocationProvider/Location
 import { Contacts } from './components/Contacts/Contacts.js';
 import { Location } from './components/Location/Location.js';
 import { Companies } from './components/Companies/Companies.js';
+import { Login } from './components/Login/Login.js';
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute.js';
 import './App.css';
 import { Users } from './components/Users/Users.js';
 
@@ -17,15 +19,18 @@ function App() {
         <LocationProvider>
           <Header />
           <Switch>
+            <Route exact path="/">
+              <Login />
+            </Route>
+            <Route exact path="/login">
+              <Login />
+            </Route>
             <Route exact path="/contacts">
               <Contacts/>
             </Route>
-            <Route exact path="/companies">
+            <ProtectedRoute exact path="/companies">
               <Companies />
-            </Route>
-            <Route exact path="/">
-              <Users />
-            </Route>
+            </ProtectedRoute>
             <Route exact path="/users">
               <Users />
             </Route>

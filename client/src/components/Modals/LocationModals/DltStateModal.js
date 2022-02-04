@@ -51,7 +51,7 @@ export const DltStateModal = ({closeModal, database}) => {
     }
 
 
-    return <div className="countryModal">
+    return <div className="genericModal">
             <form className="countryModalBody" onSubmit={(e) => deleteState(e)}>
                 <p>Ingrese el país:</p>
                 <select defaultValue={"-Seleccione un país-"} type="text" name="country" onChange={evt => setLocation({...location, [evt.target.name]: evt.target.value})}>
@@ -63,7 +63,7 @@ export const DltStateModal = ({closeModal, database}) => {
                     <option disabled>-Seleccione una Provincia-</option>
                     {renderStates ? renderStates.map(x => <option key={x.id_state} data-key={x.id_state}>{x.state}</option>) : null}
                 </select>
-                <div className="countryModalActions">
+                <div className="genericModalActions">
                     <button className="cancelBtn" type="button" onClick={() =>closeModal()}>Cancelar</button>
                     <button className="DltBtn" type="submit">Eliminar</button>
                 </div>

@@ -1,4 +1,4 @@
-import './AddCountryModal.css'
+import '../GenericModal.css'
 import {useContext, useEffect, useState } from 'react'
 import { LocationContext } from '../../Context/LocationProvider/LocationProvider'
 import Swal from 'sweetalert2'
@@ -49,7 +49,7 @@ export const AddCountryModal = ({closeModal, database}) => {
     }
 
 
-    return <div className="countryModal">
+    return <div className="genericModal">
             <form className="countryModalBody" onSubmit={(e) => saveCountry(e)}>
                 <p>Ingrese el Continente donde se encuentra el país: *</p>
                 <select defaultValue={"-Seleccione un continente-"} type="text" name="region" onChange={(evt) => setLocation({...location, [evt.target.name]: evt.target.value})} required>
@@ -67,7 +67,7 @@ export const AddCountryModal = ({closeModal, database}) => {
                 </select>
                 <p>Ingrese el País que desea agregar: *</p>
                 <input type="text" name="country" onChange={(evt) => setLocation({...location, [evt.target.name]: evt.target.value})} required></input>
-                <div className="countryModalActions">
+                <div className="genericModalActions">
                     <button className="cancelBtn" type="button" onClick={() =>closeModal()}>Cancelar</button>
                     <button className="saveBtn" type="submit">Guardar</button>
                 </div>

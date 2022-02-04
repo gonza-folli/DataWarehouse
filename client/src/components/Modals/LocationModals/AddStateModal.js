@@ -53,7 +53,7 @@ export const AddStateModal = ({closeModal, countryData}) => {
     }
 
 
-    return <div className="countryModal">
+    return <div className="genericModal">
             <form className="countryModalBody" onSubmit={(e) => saveState(e)}>
                 <p>Ingrese el País donde se encuentra el Estado: *</p>
                 <select defaultValue={"-Seleccione un País-"} type="text" name="country" onChange={(evt) => onSelect(evt)} required>
@@ -62,7 +62,7 @@ export const AddStateModal = ({closeModal, countryData}) => {
                 </select>
                 <p>Ingrese el Estado/Provincia que desea agregar: *</p>
                 <input type="text" name="state" onChange={(evt) => setLocation({...location, [evt.target.name]: evt.target.value})} required></input>
-                <div className="countryModalActions">
+                <div className="genericModalActions">
                     <button className="cancelBtn" type="button" onClick={() =>closeModal()}>Cancelar</button>
                     <button className="saveBtn" type="submit">Guardar</button>
                 </div>

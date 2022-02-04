@@ -39,14 +39,14 @@ export const DltCountryModal = ({closeModal, database}) => {
     }
 
 
-    return <div className="countryModal">
+    return <div className="genericModal">
             <form className="countryModalBody" onSubmit={(e) => deleteCountry(e)}>
                 <p>Ingrese el país que desea Eliminar:</p>
                 <select defaultValue={"-Seleccione un país-"} type="text" name="country" onChange={(evt) => onSelect(evt)}>
                     <option disabled>-Seleccione un país-</option>
                     {database ? database.map(x => <option key={x.id_country} data-key={x.id_country}>{x.country}</option>) : null}
                 </select>
-                <div className="countryModalActions">
+                <div className="genericModalActions">
                     <button className="cancelBtn" type="button" onClick={() =>closeModal()}>Cancelar</button>
                     <button className="DltBtn" type="submit">Eliminar</button>
                 </div>

@@ -54,8 +54,8 @@ export const AddCompanyModal = ({closeModal, companiesDatabase}) => {
     }
 
 
-    return <div className="countryModal">
-            <form className="cityModalBody" onSubmit={(e) => saveCity(e)}>
+    return <div className="genericModal">
+            <form className="genericModalBody" onSubmit={(e) => saveCity(e)}>
                 <p>Ingrese el Nombre de la Companía</p>
                 <input type="text" name="name" onChange={(evt) => setCompany({...company, [evt.target.name]: evt.target.value})} required></input>
                 <p>Ingrese el Número de Teléfono de la Companía</p>
@@ -65,7 +65,7 @@ export const AddCompanyModal = ({closeModal, companiesDatabase}) => {
                     <option disabled>-Seleccione un domicilio-</option>
                     {citiesDatabase ? citiesDatabase.map(x => <option key={x.id_city} data-key={x.id_city}>{x.country}, {x.state}, {x.city}, {x.address}</option>) : null}
                 </select>
-                <div className="countryModalActions">
+                <div className="genericModalActions">
                     <button className="cancelBtn" type="button" onClick={() =>closeModal()}>Cancelar</button>
                     <button className="saveBtn" type="submit">Guardar</button>
                 </div>

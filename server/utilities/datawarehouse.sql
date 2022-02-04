@@ -69,6 +69,17 @@ CREATE TABLE contacts_channels(
     FOREIGN KEY (id_channel) REFERENCES channels(id_channel)
 );
 
+CREATE TABLE users(
+    id_user INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL,
+    lastname VARCHAR(50) NOT NULL,
+    email VARCHAR(50) NOT NULL,
+    rol VARCHAR(5) NOT NULL,
+    password VARCHAR(50) NOT NULL,
+    PRIMARY KEY(id_user)
+);
+
+
 DELIMITER //
 
 DROP FUNCTION IF EXISTS JSON_ARRAYAGG//

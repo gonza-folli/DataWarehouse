@@ -170,8 +170,8 @@ export const AddCityModal = ({closeModal, countryData, editData}) => {
     }
 
 
-    return <div className="countryModal">
-            <form className="cityModalBody" onSubmit={(e) => saveCity(e)}>
+    return <div className="genericModal">
+            <form className="genericModalBody" onSubmit={(e) => saveCity(e)}>
                 <p>Ingrese el País donde se encuentra la ciudad: *</p>
                 <select defaultValue={"-Seleccione un País-"} type="text" name="country" onChange={(evt) => onSelectCountry(evt)} required>
                     {editData ? <option>{newLocation.country}</option> : <option>-Seleccione un País-</option>}
@@ -195,7 +195,7 @@ export const AddCityModal = ({closeModal, countryData, editData}) => {
                     :
                     <input type="text" name="address" onChange={(evt) => setLocation({...location, [evt.target.name]: evt.target.value})}></input>}
 
-                <div className="countryModalActions">
+                <div className="genericModalActions">
                     <button className="cancelBtn" type="button" onClick={() =>closeModal()}>Cancelar</button>
                     {editData ? 
                         <button className="saveBtn" type="button" onClick={() =>editCity()}>Guardar Cambios</button>
