@@ -44,6 +44,11 @@
     background-color: white;
 }
 
+.usersSection .genericModalBody {
+    margin-top: 35px;
+    width: auto;
+}
+
 .genericModalBody p {
     margin-top: 42px;
     font-size: 15px;

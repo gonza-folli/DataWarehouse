@@ -4,6 +4,9 @@ import { LocationContext } from '../../Context/LocationProvider/LocationProvider
 
 export const EditCompanyModal = ({closeModal, renderData, companiesDatabase}) => {
 
+    //Obtener Token
+    const token = localStorage.getItem('token')
+
     const [company, setCompany] = useState({
         id_company: renderData.id_company,
         name: renderData.name,
@@ -45,7 +48,10 @@ export const EditCompanyModal = ({closeModal, renderData, companiesDatabase}) =>
         } else {
             await fetch('/companies', {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
                 body: JSON.stringify(company)
             })
             .then(response => response.json()).then(response => 

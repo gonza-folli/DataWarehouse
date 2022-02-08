@@ -11,9 +11,21 @@ const db_getSingleUser = (name, lastname , email) =>
         type: sequelize.QueryTypes.SELECT
     })
 
+const db_getSingleUserByMail = (email) =>
+    sequelize.query('SELECT * from users WHERE email = ?', {
+        replacements: email,
+        type: sequelize.QueryTypes.SELECT
+    })
+
 const db_getOriginalUser = (id_user) =>
     sequelize.query('SELECT * from users WHERE id_user = ?', {
         replacements: id_user,
+        type: sequelize.QueryTypes.SELECT
+    })
+
+const db_login = (user, pass) =>
+    sequelize.query('SELECT * from users WHERE email = ? AND password = ?', {
+        replacements: user, pass,
         type: sequelize.QueryTypes.SELECT
     })
 
@@ -36,4 +48,4 @@ const db_removeUser = (id_user) =>
     })
 
 
-module.exports = {db_getUsers, db_getSingleUser, db_getOriginalUser, db_addUser, db_editUser, db_removeUser}
+module.exports = {db_getUsers, db_getSingleUser, db_getSingleUserByMail, db_getOriginalUser, db_login, db_addUser, db_editUser, db_removeUser}

@@ -5,6 +5,9 @@ import Swal from 'sweetalert2'
 
 export const AddCountryModal = ({closeModal, database}) => {
 
+    //Obtener Token
+    const token = localStorage.getItem('token')
+
     const {getSubregions} = useContext(LocationContext)
 
     const [renderSubregion, setRenderSubregion] = useState()
@@ -34,7 +37,10 @@ export const AddCountryModal = ({closeModal, database}) => {
         } else {
             await fetch('/location/country', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
                 body: JSON.stringify(location)
             })
             .then(response => response.json()).then(data => 

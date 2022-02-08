@@ -6,9 +6,17 @@ export const SearchProvider = ({children}) => {
 
     const [dataFiltered, setDataFiltered] = useState(null) // Estado para setear los contactos (completos o filtrados)
 
+    //Obtener Token
+    const token = localStorage.getItem('token')
+
     //FETCH general
     const getContacts = function () {
-        let response = fetch('/contacts')
+        let response = fetch('/contacts', {
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        })
         return response.then(data => data.json())
     }
 

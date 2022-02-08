@@ -9,34 +9,31 @@ import { Login } from './components/Login/Login.js';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute.js';
 import './App.css';
 import { Users } from './components/Users/Users.js';
+import { useState } from 'react';
 
 
 function App() {
+
+  const [auth, setAuth] = useState(false)
+  const [logUser, setLogUser] = useState()
+
   return (
     <div className="App">
       <BrowserRouter>
         <SearchProvider>
         <LocationProvider>
-          <Header />
+          <Header logUser={logUser} setAuth={setAuth} setLogUser={setLogUser}/>
           <Switch>
             <Route exact path="/">
-              <Login />
+              <Login setAuth={setAuth} setLogUser={setLogUser}/>
             </Route>
             <Route exact path="/login">
-              <Login />
+              <Login setAuth={setAuth} setLogUser={setLogUser}/>
             </Route>
-            <Route exact path="/contacts">
-              <Contacts/>
-            </Route>
-            <ProtectedRoute exact path="/companies">
-              <Companies />
-            </ProtectedRoute>
-            <Route exact path="/users">
-              <Users />
-            </Route>
-            <Route exact path="/location">
-              <Location />
-            </Route>
+            <ProtectedRoute exact path="/contacts" auth={auth} component={Contacts} />
+            <ProtectedRoute exact path="/companies" auth={auth} component={Companies} />
+            <ProtectedRoute exact path="/users" auth={auth} component={Users} logUser={logUser} setAuth={setAuth} setLogUser={setLogUser}/>
+            <ProtectedRoute exact path="/location" auth={auth} component={Location} />
           </Switch>
         </LocationProvider>
         </SearchProvider>

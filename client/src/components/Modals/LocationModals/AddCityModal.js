@@ -6,6 +6,8 @@ export const AddCityModal = ({closeModal, countryData, editData}) => {
 
     const {getStates, getCities} = useContext(LocationContext)
 
+    //Obtener Token
+    const token = localStorage.getItem('token')
 
 // ----------- Seccion agregar ciudad ------------------------------
     const [renderStates, setRenderStates] = useState()
@@ -72,7 +74,10 @@ export const AddCityModal = ({closeModal, countryData, editData}) => {
         } else {
             await fetch('/location/city', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
                 body: JSON.stringify(location)
             })
             .then(response => response.json()).then(response => 
@@ -147,7 +152,10 @@ export const AddCityModal = ({closeModal, countryData, editData}) => {
         } else {
             await fetch('/location', {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
                 body: JSON.stringify(newLocation)
             })
             .then(response => response.json()).then(data => {

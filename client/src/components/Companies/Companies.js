@@ -8,14 +8,22 @@ export const Companies = () => {
     const [renderData, setRenderData] = useState()
     const [companyEditData, setCompanyEditData] = useState()
 
+    //Obtener Token
+    const token = localStorage.getItem('token')
+
     const getCompanies = () => {
-        let response = fetch('/companies')
+        let response = fetch('/companies', {
+            headers: {'Authorization': `Bearer ${token}`},
+        })
         response.then(response => response.json()).then(data => setRenderData(data.response))
     }
 
     useEffect(() => {
-        getCompanies()
-    }, [])
+        let response = fetch('/companies', {
+            headers: {'Authorization': `Bearer ${token}`},
+        })
+        response.then(response => response.json()).then(data => setRenderData(data.response))
+    }, [token])
 
 
     //para desplegar el Modal Agregar compañia

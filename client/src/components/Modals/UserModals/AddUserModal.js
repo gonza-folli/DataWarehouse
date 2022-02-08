@@ -4,6 +4,9 @@ import Swal from 'sweetalert2'
 
 export const AddUserModal = ({closeModal, editData}) => {
 
+    //Obtener Token
+    const token = localStorage.getItem('token')
+
     const [user, setUser] = useState({
         name: "",
         lastname: "",
@@ -21,18 +24,16 @@ export const AddUserModal = ({closeModal, editData}) => {
         }
     }
 
-    useEffect(() => {
-        console.log(user)
-    }, [user])
-
-
 
     async function saveUser (e) {
         e.preventDefault()
         if (user.pass === user.repass) {
-            await fetch('/users', {
+            await fetch('/users/signup', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
                 body: JSON.stringify(user)
             })
             .then(response => response.json()).then(data => {
@@ -87,17 +88,16 @@ export const AddUserModal = ({closeModal, editData}) => {
     }, [editData])
 
 
-    useEffect(() => {
-        console.log(newUser)
-    }, [newUser])
-
     //funcion EDITAR CONTACTO
     async function changeUser (e) {
         e.preventDefault()
         if (newUser.pass === newUser.repass) {
                 await fetch('/users', {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
                 body: JSON.stringify(newUser)
             })
             .then(response => response.json())

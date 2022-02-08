@@ -1,8 +1,6 @@
 import { useState, useEffect, useContext } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUpload } from '@fortawesome/free-solid-svg-icons'
-import { faCaretDown } from '@fortawesome/free-solid-svg-icons'
-import { faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faUpload, faCaretDown, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { ContactsTableHeader } from '../ContactsTableHeader/ContactsTableHeader'
 import { SearchMenu } from '../SearchMenu/SearchMenu'
 import { SearchButton } from '../SearchButton/SearchButton'
@@ -12,13 +10,24 @@ import { ExportMenu } from '../ExportMenu/ExportMenu'
 import { AddContactModal } from '../Modals/ContactModals/AddContactModal'
 import { ImportContactModal } from '../Modals/ContactModals/ImportContactModal'
 import { DeleteContactModal } from '../Modals/ContactModals/DeleteContactModal'
-// import { EditContactModal } from '../Modals/ContactModals/EditContactModal'
 import './Contacts.css'
 
 
 export const Contacts = () => {
 
     const {getContacts, searchData, storeContactData, displayDelSingleContact, setDelContactData, setDisplayDelSingleContact} = useContext(SearchContext)
+
+    //Obtener Token
+    const token = localStorage.getItem('token')
+    // const [validateToken, setValidateToken] = useState(false)
+
+    // useEffect(() => {
+    //     if (token !== "") {
+    //         setValidateToken(true)
+    //     }
+    // }, [token])
+
+
 
     //Estado para renderizar los contactos
     const [renderData, setRenderData] = useState(null)
@@ -31,12 +40,14 @@ export const Contacts = () => {
 
     //seteo INICIAL para fetchear TODOS los contactos
     useEffect(() => {
-        const response = fetch('/contacts')
+        const response = fetch('/contacts', {
+            headers: {'Authorization': `Bearer ${token}`},
+        })
         response.then(data => data.json()).then(data => {
             setRenderData(data.response) //manejar estado de renderizado
             setContactDatabase(data.response) //manejar array internamente con todos los datos de contactos ya fetcheados
         })
-    }, [])
+    }, [token])
 
     //Estado para renderizar opciones elegidas del buscador
     const [filters, setFilters] = useState(null)

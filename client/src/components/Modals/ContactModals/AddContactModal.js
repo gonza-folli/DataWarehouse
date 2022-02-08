@@ -11,6 +11,9 @@ export const AddContactModal = ({closeModal, editData}) => {
 
     const {getAllSubregions, getCountriesFromSubreg, getCitiesFromCountry, getAddressFromCities} = useContext(LocationContext)
 
+    //Obtener Token
+    const token = localStorage.getItem('token')
+
     const [contactData, setContactData] = useState()
     
     //Seteo inicial de las subregiones, paises, ciudades y compañias
@@ -22,16 +25,20 @@ export const AddContactModal = ({closeModal, editData}) => {
 
     useEffect(() => {
         getAllSubregions().then(data => setRegions(data.response))
-        fetch('/companies').then(response => response.json()).then(data => setCompanies(data.response))
-    }, [getAllSubregions])
+        fetch('/companies', {
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            }},).then(response => response.json()).then(data => setCompanies(data.response))
+    }, [getAllSubregions, token])
 
-    useEffect(() => {
-        console.log(contactData)
-    }, [contactData])
+    // useEffect(() => {
+    //     console.log(contactData)
+    // }, [contactData])
 
-    useEffect(() => {
-        console.log(editData)
-    }, [editData])
+    // useEffect(() => {
+    //     console.log(editData)
+    // }, [editData])
 
     //funcion para activar siguiente campo
     const [countryDisabled, setCountryDisabled] = useState(true)
@@ -173,7 +180,10 @@ export const AddContactModal = ({closeModal, editData}) => {
         let contactToAdd = {...contactData, channelData}
         await fetch('/contacts', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
             body: JSON.stringify(contactToAdd)
         })
         .then(response => response.json()).then(data => {
@@ -214,11 +224,6 @@ export const AddContactModal = ({closeModal, editData}) => {
         state: "",
         subregion: ""
     })
-    
-    // useEffect(() => {
-    //     console.log(channelData)
-    //     console.log(newChannelData)
-    // }, [channelData, newChannelData])
 
     useEffect(() => {
         if (editData) {
@@ -259,9 +264,9 @@ export const AddContactModal = ({closeModal, editData}) => {
         }
     }, [editData])
 
-    useEffect(() => {
-        console.log(newContact)
-    }, [newContact])
+    // useEffect(() => {
+    //     console.log(newContact)
+    // }, [newContact])
 
     //funcion EDITAR CONTACTO
     async function changeContact () {
@@ -269,7 +274,10 @@ export const AddContactModal = ({closeModal, editData}) => {
     let contactToAdd = {...newContact, newChannelData}
     await fetch('/contacts', {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
         body: JSON.stringify(contactToAdd)
     })
     .then(response => response.json())

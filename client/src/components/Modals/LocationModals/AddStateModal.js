@@ -6,6 +6,9 @@ export const AddStateModal = ({closeModal, countryData}) => {
 
     const {getStates} = useContext(LocationContext)
 
+    //Obtener Token
+    const token = localStorage.getItem('token')
+
     const [statesDatabase, setStatesDatabase] = useState()
 
     const [location, setLocation] = useState({
@@ -38,7 +41,10 @@ export const AddStateModal = ({closeModal, countryData}) => {
         } else {
             await fetch('/location/state', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
                 body: JSON.stringify(location)
             })
             .then(response => response.json()).then(data => 

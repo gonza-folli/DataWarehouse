@@ -1,11 +1,13 @@
 const express = require('express');
-const routes = require('./routes/routes.js')
 const app = express();
 const port = 5000
+const routes = require('./routes/routes.js')
+const middleware = require('./middlewares/global_middlewares')
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+middleware(app)
 routes(app)
 
 app.listen(port, () => {

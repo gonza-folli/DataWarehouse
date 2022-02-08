@@ -5,6 +5,8 @@ import { faPen } from '@fortawesome/free-solid-svg-icons'
 
 export const UsersData = ({renderData, renderCleanUsers, openEditModal}) => {
 
+    //Obtener Token
+    const token = localStorage.getItem('token')
 
     const dltUser = async (user) => {
         await Swal.fire({
@@ -17,7 +19,10 @@ export const UsersData = ({renderData, renderCleanUsers, openEditModal}) => {
             if (result.isConfirmed) {
                 let response = fetch('/users', {
                     method: "DELETE",
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                    },
                     body: JSON.stringify(renderData)
                 })
                 response.then(response => response.json())

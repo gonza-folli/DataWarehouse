@@ -6,6 +6,9 @@ export const DltStateModal = ({closeModal, database}) => {
 
     const {getStates} = useContext(LocationContext)
 
+    //Obtener Token
+    const token = localStorage.getItem('token')
+
     const [renderStates, setRenderStates] = useState()
 
     const [location, setLocation] = useState({
@@ -30,7 +33,10 @@ export const DltStateModal = ({closeModal, database}) => {
         e.preventDefault()
         await fetch('/location/state', {
             method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
             body: JSON.stringify(location)
         })
         .then(response => response.json()).then(response => {

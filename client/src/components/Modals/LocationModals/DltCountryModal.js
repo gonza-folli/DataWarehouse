@@ -3,6 +3,9 @@ import Swal from 'sweetalert2'
 
 export const DltCountryModal = ({closeModal, database}) => {
 
+    //Obtener Token
+    const token = localStorage.getItem('token')
+
     const [location, setLocation] = useState({
         id_country: "",
         country: ""
@@ -18,7 +21,10 @@ export const DltCountryModal = ({closeModal, database}) => {
         e.preventDefault()
         await fetch('/location/country', {
             method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
             body: JSON.stringify(location)
         })
         .then(response => response.json()).then(data => {

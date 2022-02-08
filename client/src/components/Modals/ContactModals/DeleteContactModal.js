@@ -8,10 +8,16 @@ export const DeleteContactModal = ({closeModal}) => {
 
     const {delContactData} = useContext(SearchContext)
 
+    //Obtener Token
+    const token = localStorage.getItem('token')
+
     const deleteContact = async (contactData) => {
         await fetch('/contacts', {
             method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
             body: JSON.stringify(contactData)
         })
         .then(response => response.json()).then(data => {

@@ -6,6 +6,9 @@ export const AddCompanyModal = ({closeModal, companiesDatabase}) => {
 
     const {getAvailableCities} = useContext(LocationContext)
 
+    //Obtener Token
+    const token = localStorage.getItem('token')
+
     const [citiesDatabase, setCitiesDatabase] = useState()
 
     const [company, setCompany] = useState({
@@ -40,7 +43,10 @@ export const AddCompanyModal = ({closeModal, companiesDatabase}) => {
         } else {
             await fetch('/companies', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json' ,
+                    'Authorization': `Bearer ${token}`
+            },
                 body: JSON.stringify(company)
             })
             .then(response => response.json()).then(response => 

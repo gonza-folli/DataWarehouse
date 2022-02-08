@@ -19,6 +19,7 @@ export const Location = () => {
 
     const {getCountries, getStates, getCities} = useContext(LocationContext)
 
+
     const [renderLocation, setRenderLocation] = useState({
         country: "",
         state: "",
