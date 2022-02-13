@@ -3,15 +3,14 @@ const Response = require('../../utilities/response')
 
 
 const removeCountry = async function (req,res) {
-    const {id_country} = req.body
+    const {id_country, country} = req.body
     try {
-        let dbRes = await db_removeCountry([id_country])
-        console.log(dbRes)
-        response = new Response(false,200,'Pais eliminado exitosamente')
+        await db_removeCountry([id_country])
+        response = new Response(false,200,`Pais ${country} eliminado exitosamente`)
         res.status(200).send(response)
     }
     catch (e) {
-        response = new Response(true,400,'Error al eliminar el país', e)
+        response = new Response(true,400,'Error al eliminar el país seleccionado', e)
         res.status(400).send(response)
     }
 }

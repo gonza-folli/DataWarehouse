@@ -9,8 +9,8 @@ const {removeContact} = require('../controllers/contacts/removeContact')
 const middleware = require('../middlewares/middle_contacts')
 
 router.get('/', getContacts)
-router.post('/', addContact)
-router.put('/', middleware.validateEditFields, middleware.findDifferences, middleware.validateChannelFields, editContact)
+router.post('/', middleware.validateAddFields, middleware.validateEmailRegex, middleware.findDuplicate, middleware.validateChannelFields, addContact)
+router.put('/', middleware.validateEditFields, middleware.findDifferences, middleware.validateEmailRegex, middleware.validateChannelEditFields, editContact)
 router.delete('/', removeContact)
 
 

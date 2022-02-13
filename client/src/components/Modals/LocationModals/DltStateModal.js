@@ -17,11 +17,18 @@ export const DltStateModal = ({closeModal, database}) => {
         state: ""
     })
 
+
     useEffect(()=> {
-        if (location.country !== "" && location.state === "") {
+        if (location.country !== "") {
             getStates(location.country).then(response => setRenderStates(response))
         }
     }, [location, getStates])
+
+    function onSelectCountry (evt) {
+        const state = Object.keys(location)[2]
+        const id_state = Object.keys(location)[1]
+        setLocation({...location, [state]: "", [id_state]: "", [evt.target.name]: evt.target.value})
+    }
 
     function onSelect (evt) {
         const selectedIndex = evt.target.options.selectedIndex
@@ -31,36 +38,43 @@ export const DltStateModal = ({closeModal, database}) => {
 
     async function deleteState (e) {
         e.preventDefault()
-        await fetch('/location/state', {
-            method: 'DELETE',
-            headers: { 
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            },
-            body: JSON.stringify(location)
-        })
-        .then(response => response.json()).then(response => {
-            if (response.error === false) {
-                Swal.fire({
-                    icon: 'success',
-                    text: `El estado/provincia ${location.state} se eliminó correctamente!`,
-                })
-                closeModal()
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    text: `Primero debe eliminar las ciudades asociadas al la provincia`,
-                })
-            }
-        })
-        .catch(e => console.log(e))
+        if (location.state !== "") {
+            await fetch('/location/state', {
+                method: 'DELETE',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify(location)
+            })
+            .then(response => response.json()).then(data => {
+                if (data.error === false) {
+                    Swal.fire({
+                        icon: 'success',
+                        text: `${data.message}`,
+                    })
+                    closeModal()
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        text: `${data.message}`,
+                    })
+                }
+            })
+            .catch(e => console.log(e))
+        } else {
+            Swal.fire({
+                icon: 'error',
+                text: `Debe seleccionar una provincia para eliminar`,
+            })
+        }
     }
 
 
     return <div className="genericModal">
             <form className="countryModalBody" onSubmit={(e) => deleteState(e)}>
                 <p>Ingrese el país:</p>
-                <select defaultValue={"-Seleccione un país-"} type="text" name="country" onChange={evt => setLocation({...location, [evt.target.name]: evt.target.value})}>
+                <select defaultValue={"-Seleccione un país-"} type="text" name="country" onChange={evt => onSelectCountry(evt)}>
                     <option disabled>-Seleccione un país-</option>
                     {database ? database.map(x => <option key={x.id_country} data-key={x.id_country}>{x.country}</option>) : null}
                 </select>

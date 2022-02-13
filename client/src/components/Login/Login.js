@@ -39,6 +39,8 @@ export const Login = ({setAuth, setLogUser}) => {
                     text: `${data.message}`,
                     icon: 'success',
                     })
+                    setRenderForm(false) //Estado para limpiar el formulario
+                    setRenderForm(true) //Estado para limpiar el formulario
                 } else {
                     Swal.fire({
                     text: `${data.message}`,
@@ -47,8 +49,6 @@ export const Login = ({setAuth, setLogUser}) => {
                 }
             })
             .catch(e => console.log(e))
-            setRenderForm(false) //Estado para limpiar el formulario
-            setRenderForm(true) //Estado para limpiar el formulario
         } else {
             await Swal.fire({
                 text: `Las contraseñas no coinciden`,
@@ -99,9 +99,7 @@ export const Login = ({setAuth, setLogUser}) => {
                         <input type="text" name="email" onChange={(evt) =>handleUserChange(evt)}/>
                     <p> Perfil </p>  
                         <select name="rol" onChange={(evt) =>handleUserChange(evt)}>
-                            <option value="">-Seleccione un perfil-</option>  
                             <option value="user">Usuario</option>
-                            <option value="admin">Admin</option>
                         </select>     
                     <p> Contraseña </p>
                     <input type="Password" name="pass" onChange={(evt) =>handleUserChange(evt)}/>     

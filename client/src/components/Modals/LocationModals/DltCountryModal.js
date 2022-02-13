@@ -19,29 +19,36 @@ export const DltCountryModal = ({closeModal, database}) => {
 
     async function deleteCountry (e) {
         e.preventDefault()
-        await fetch('/location/country', {
-            method: 'DELETE',
-            headers: { 
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            },
-            body: JSON.stringify(location)
-        })
-        .then(response => response.json()).then(data => {
-            if (data.error === false) {
-                Swal.fire({
-                    icon: 'success',
-                    text: `El pais ${location.country} se eliminó correctamente!`,
-                })
-                closeModal()
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    text: `Primero debe eliminar las provincias y ciudades asociadas al país`,
-                })
-            }
-        })
-        .catch(e => console.log(e))
+        if (location.id_country !== '') {
+            await fetch('/location/country', {
+                method: 'DELETE',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify(location)
+            })
+            .then(response => response.json()).then(data => {
+                if (data.error === false) {
+                    Swal.fire({
+                        icon: 'success',
+                        text: `${data.message}`,
+                    })
+                    closeModal()
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        text: `${data.message}`,
+                    })
+                }
+            })
+            .catch(e => console.log(e))
+        } else {
+            Swal.fire({
+                icon: 'error',
+                text: `Debe seleccionar un país para eliminar`,
+            })
+        }
     }
 
 

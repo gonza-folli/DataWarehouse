@@ -8,12 +8,13 @@ const {login} = require('../controllers/users/login')
 const {editUser} = require('../controllers/users/editUser')
 const {removeUser} = require('../controllers/users/removeUser')
 const middleware = require('../middlewares/middle_users')
+const {validatePrivilege} = require('../middlewares/validatePrivilege')
 
-router.get('/', getUsers)
-router.post('/signup', middleware.validateFields, middleware.findDuplicate, addUser)
 router.post('/login', login)
-router.put('/', middleware.validateEditFields, middleware.findDifferences, editUser)
-router.delete('/', removeUser)
+router.post('/signup', middleware.validateFields, middleware.findDuplicate, middleware.validateEmailRegex, addUser)
+router.get('/', getUsers)
+router.put('/', validatePrivilege, middleware.validateEditFields, middleware.findDifferences, middleware.validateEmailRegex, editUser)
+router.delete('/', validatePrivilege, removeUser)
 
 
 module.exports = router

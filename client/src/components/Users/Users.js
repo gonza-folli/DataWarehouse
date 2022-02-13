@@ -8,8 +8,6 @@ export const Users = ({logUser, setAuth, setLogUser}) => {
 
     const [renderData, setRenderData] = useState()
 
-
-
     //Obtener Token
     const token = localStorage.getItem('token')
 
@@ -24,12 +22,11 @@ export const Users = ({logUser, setAuth, setLogUser}) => {
     const [userEditData, setUserEditData] = useState(null)
 
     useEffect(() => {
-        console.log(logUser)
         let response = fetch('/users', {
             headers: {'Authorization': `Bearer ${token}`},
         })
         response.then(response => response.json()).then(data => setRenderData(data.response))
-    }, [token, logUser])
+    }, [token])
 
 
     //para desplegar el Modal Agregar usuario

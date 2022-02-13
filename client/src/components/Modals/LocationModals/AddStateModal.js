@@ -10,6 +10,7 @@ export const AddStateModal = ({closeModal, countryData}) => {
     const token = localStorage.getItem('token')
 
     const [statesDatabase, setStatesDatabase] = useState()
+    const [stateDisabled, setStateDisabled] = useState(true)
 
     const [location, setLocation] = useState({
         id_country: "",
@@ -28,33 +29,41 @@ export const AddStateModal = ({closeModal, countryData}) => {
         const selectedIndex = evt.target.options.selectedIndex
         const id_country = (evt.target.options[selectedIndex].getAttribute('data-key'))
         setLocation({...location, id_country, [evt.target.name]: evt.target.value})
+        setStateDisabled(false)
     }
 
     async function saveState (e) {
         e.preventDefault()
-        let findDuplicate = statesDatabase.find( x => x.state.toLowerCase() === location.state.toLowerCase())
-        if (findDuplicate) {
+        if (location.state !== "") {
+            let findDuplicate = statesDatabase.find( x => x.state.toLowerCase() === location.state.toLowerCase())
+            if (findDuplicate) {
+                Swal.fire({
+                    icon: 'error',
+                    text: `El estado/provincia ${location.state} ya se encuentra registrado en el país ${location.country}`,
+                })
+            } else {
+                await fetch('/location/state', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                    },
+                    body: JSON.stringify(location)
+                })
+                .then(response => response.json()).then(data => 
+                    Swal.fire({
+                        icon: 'success',
+                        text: `El estado ${location.state} se ha registrado correctamente!`,
+                    })
+                )
+                .catch(e => console.log(e))
+                closeModal()
+            }
+        } else {
             Swal.fire({
                 icon: 'error',
-                text: `El estado/provincia ${location.state} ya se encuentra registrado en el país ${location.country}`,
+                text: `Debe escribir una provincia para agregar`,
             })
-        } else {
-            await fetch('/location/state', {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                },
-                body: JSON.stringify(location)
-            })
-            .then(response => response.json()).then(data => 
-                Swal.fire({
-                    icon: 'success',
-                    text: `El estado ${location.state} se ha registrado correctamente!`,
-                })
-            )
-            .catch(e => console.log(e))
-            closeModal()
         }
     }
 
@@ -67,7 +76,7 @@ export const AddStateModal = ({closeModal, countryData}) => {
                     {countryData ? countryData.map(x => <option key={x.id_country} data-key={x.id_country}>{x.country}</option>) : null}
                 </select>
                 <p>Ingrese el Estado/Provincia que desea agregar: *</p>
-                <input type="text" name="state" onChange={(evt) => setLocation({...location, [evt.target.name]: evt.target.value})} required></input>
+                <input type="text" name="state" onChange={(evt) => setLocation({...location, [evt.target.name]: evt.target.value})} required disabled={stateDisabled}></input>
                 <div className="genericModalActions">
                     <button className="cancelBtn" type="button" onClick={() =>closeModal()}>Cancelar</button>
                     <button className="saveBtn" type="submit">Guardar</button>

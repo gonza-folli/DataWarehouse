@@ -25,9 +25,12 @@
 table.content-table {
     border: 1px solid rgba(00, 00, 00, 0.1 );
     border-collapse: collapse;
-    margin: 0 2.5%;
+    margin: 60px 2.5%;
     width: 95%;
     font-size: 14px;
+}
+thead {
+    background-color: rgba(0,0,0,0.08);
 }
 thead tr {
     height: 67.5px;

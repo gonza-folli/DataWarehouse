@@ -29,9 +29,9 @@ const db_login = (user, pass) =>
         type: sequelize.QueryTypes.SELECT
     })
 
-const db_addUser = (name, lastname , email, rol, pass) =>
-    sequelize.query('INSERT INTO users (name, lastname , email, rol, password) VALUES (?, ?, ?, ?, ?)', {
-        replacements: name, lastname , email, rol, pass,
+const db_addUser = (name, lastname , email, pass) =>
+    sequelize.query('INSERT INTO users (name, lastname , email, rol, password) VALUES (?, ?, ?, "user", ?)', {
+        replacements: name, lastname , email, pass,
         type: sequelize.QueryTypes.INSERT
     })
 

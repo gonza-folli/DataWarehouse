@@ -11,7 +11,8 @@ export const AddCityModal = ({closeModal, countryData, editData}) => {
 
 // ----------- Seccion agregar ciudad ------------------------------
     const [renderStates, setRenderStates] = useState()
-    const [citiesDatabase, setCitiesDatabase] = useState()
+
+    const [cityDisabled, setCityDisabled] = useState(true)
 
     const [location, setLocation] = useState({
         id_country: "",
@@ -26,9 +27,6 @@ export const AddCityModal = ({closeModal, countryData, editData}) => {
     useEffect(() => {
         if (location.country !== "" && location.state === "") {
             getStates(location.country).then(response => setRenderStates(response))
-        }
-        if (location.state !== "" && location.city === "") {
-            getCities(location.country, location.state).then(response => setCitiesDatabase(response))
         }
     }, [getStates, getCities, location])
 
@@ -57,21 +55,13 @@ export const AddCityModal = ({closeModal, countryData, editData}) => {
         } else { // solo aplica para agregar nueva ciudad
             setLocation({...location, id_state, [evt.target.name]: evt.target.value})
         }
+        setCityDisabled(false)
     }
 
 
     async function saveCity (e) {
         e.preventDefault()
-        let findDuplicate = citiesDatabase.find( x => 
-            x.city.toLowerCase() === location.city.toLowerCase() && 
-            x.address.toLowerCase() === location.address.toLowerCase() 
-        )
-        if (findDuplicate) {
-            Swal.fire({
-                icon: 'error',
-                text: `La dirección ${location.address} en la ciudad ${location.city} ya se encuentra registrada!`,
-            })
-        } else {
+        if (location.state !== "" && location.address !== "" && location.city !== "") {
             await fetch('/location/city', {
                 method: 'POST',
                 headers: { 
@@ -80,14 +70,26 @@ export const AddCityModal = ({closeModal, countryData, editData}) => {
                 },
                 body: JSON.stringify(location)
             })
-            .then(response => response.json()).then(response => 
-                Swal.fire({
-                    icon: 'success',
-                    text: `La dirección ${location.address} en la ciudad ${location.city} se ha registrado correctamente`,
-                })
-                )
+            .then(response => response.json()).then(data => {
+                if (data.error === false) {
+                    Swal.fire({
+                        icon: 'success',
+                        text: `${data.message}`,
+                    })
+                    closeModal()
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        text: `${data.message}`,
+                    })
+                }
+            })
             .catch(e => console.log(e))
-            closeModal()
+        } else {
+            Swal.fire({
+                icon: 'error',
+                text: `Debe completar TODOS los datos`,
+            })
         }
     }
 
@@ -120,8 +122,6 @@ export const AddCityModal = ({closeModal, countryData, editData}) => {
     //actualizar listados de paises, provincias
     useEffect(() => {
         if (editData) {
-            // console.log(newLocation)
-            // console.log(editData)
             if (newLocation.country === editData.country && newLocation.state === editData.state && newLocation.city === editData.city) {
                 getStates(newLocation.country).then(response => setRenderStates(response))
             }
@@ -193,15 +193,15 @@ export const AddCityModal = ({closeModal, countryData, editData}) => {
 
                 <p>Ingrese la Ciudad que desea agregar: *</p>
                 {editData ? 
-                    <input value={newLocation.city} type="text" name="city" onChange={(evt) => setNewLocation({...newLocation, [evt.target.name]: evt.target.value})} required></input> 
+                    <input value={newLocation.city} type="text" name="city" onChange={(evt) => setNewLocation({...newLocation, [evt.target.name]: evt.target.value})} required disabled={cityDisabled}></input> 
                     : 
-                    <input type="text" name="city" onChange={(evt) => setLocation({...location, [evt.target.name]: evt.target.value})} required></input>}
+                    <input type="text" name="city" onChange={(evt) => setLocation({...location, [evt.target.name]: evt.target.value})} required disabled={cityDisabled}></input>}
                 
                 <p>Ingrese domicilio que desea agregar:</p>
                 {editData ? 
-                    <input value={newLocation.address} type="text" name="address" onChange={(evt) => setNewLocation({...newLocation, [evt.target.name]: evt.target.value})}></input>
+                    <input value={newLocation.address} type="text" name="address" onChange={(evt) => setNewLocation({...newLocation, [evt.target.name]: evt.target.value})} disabled={cityDisabled}></input>
                     :
-                    <input type="text" name="address" onChange={(evt) => setLocation({...location, [evt.target.name]: evt.target.value})}></input>}
+                    <input type="text" name="address" onChange={(evt) => setLocation({...location, [evt.target.name]: evt.target.value})} disabled={cityDisabled}></input>}
 
                 <div className="genericModalActions">
                     <button className="cancelBtn" type="button" onClick={() =>closeModal()}>Cancelar</button>

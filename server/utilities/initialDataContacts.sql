@@ -1,6 +1,6 @@
 INSERT INTO users (name,  lastname, email, rol, password) VALUES
-('Admin', 'Admin', 'admin@hotmail.com', 1, '212223' ),
-('Gonzalo', 'Folli', 'gonza_folli@hotmail.com', 0, '212223');
+('Admin', 'Admin', 'masteruser', 'admin', 'admin'),
+('Gonzalo', 'Folli', 'gonza_folli@hotmail.com', 'user', '212223');
 
 
 INSERT INTO contacts (name,  lastname, profile_photo, position, email, id_company, id_city, interest) VALUES

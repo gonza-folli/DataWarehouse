@@ -3,9 +3,9 @@ const Response = require("../../utilities/response")
 
 
 const addUser = async function (req,res)  {
-    const {name, lastname , email, rol, pass} = req.body
+    const {name, lastname , email, pass} = req.body
     try {
-        let dbRes = await db_addUser([name, lastname , email, rol, pass])
+        let dbRes = await db_addUser([name, lastname , email, pass])
         let response = new Response(false, 200, `Usuario ${name} ${lastname} agregado correctamente`, dbRes)
         console.log(response)
         res.status(200).send(response)

@@ -77,6 +77,8 @@
     display: flex;
     justify-content: space-between;
     margin: 21px 2.5% 4.5px 2.5%;
+    position: absolute;
+    width: 95%;
 }
 .selectedQuantity {
     background-color: #e6f2fe;
@@ -88,14 +90,14 @@
     line-height: 24px;
     font-weight: 600;
 }
-.deleteBtn {
+.trashBtn {
     display: flex;
     justify-content: space-evenly;
     color: #1D72C2;
     width: 160px;
     cursor: pointer;
 }
-.deleteBtn h4{
+.trashBtn h4{
     font-weight: 500;
     font-family: 'Open Sans';
     font-size: 14px;

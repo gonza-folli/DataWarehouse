@@ -159,12 +159,12 @@ label {
     font-size: 12px;
 }
 .modalFooter {
-    height: 174px;
+    height: 100px;
     width: 80%;
     background-color: white;
 }
 .modalActions {
-    margin-top: 100px;
+    margin-top: 50px;
     display: flex;
     justify-content: flex-end;
 }
@@ -186,4 +186,10 @@ label {
     background-color: rgba(0,0,0,0.25);
     border-radius: 2px;
     border: none;
+}
+.deleteBtn {
+    color: red;
+    border-radius: 2px;
+    border: none;
+    font-weight: 600;
 }

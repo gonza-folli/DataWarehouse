@@ -4,13 +4,15 @@
     margin-top: 5px;
 }
 .ExportFunctions {
+    position: absolute;
     width: 402px;
-    background-color: white;
+    /* background-color: white; */
     display: flex;
     height: 112px;
     margin: 0 3% 0 0;
 }
 .ExportFunctions div{
+    background-color: white;
     margin: 0 0 0 50px ;
     display: flex;
     flex-direction: column;

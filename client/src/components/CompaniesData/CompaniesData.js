@@ -17,7 +17,7 @@ export const CompaniesData = ({renderData, renderCleanCompanies, editCompanyData
             confirmButtonText: 'Si'
         }).then(result => {
             if (result.isConfirmed) {
-                let response = fetch('./companies', {
+                fetch('./companies', {
                     method: "DELETE",
                     headers: { 
                         'Content-Type': 'application/json',
@@ -25,12 +25,19 @@ export const CompaniesData = ({renderData, renderCleanCompanies, editCompanyData
                     },
                     body: JSON.stringify(renderData)
                 })
-                response.then(response => response.json()).then(data => {
-                    Swal.fire({
-                    icon: 'success',
-                    text: `${company} se ha eliminado correctamente`,
-                    })
-                renderCleanCompanies()
+                .then(response => response.json()).then(data =>{ 
+                    if (data.error === false) {
+                        Swal.fire({
+                            icon: 'success',
+                            text: `${data.message}`,
+                        })
+                    renderCleanCompanies()
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            text: `${data.message}`,
+                        })
+                    }
                 })
             }
         })

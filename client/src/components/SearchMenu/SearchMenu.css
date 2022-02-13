@@ -1,11 +1,14 @@
 .SearchMenu {
+    background-color: white;
     width: 502px;
     border: 1px solid rgba(0,0,0,0.25);
-    margin: 5px 3% 20px 3% ;
+    margin: 5px 3% 20px 2.5% ;
     height: 375px;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+    position: absolute;
+    z-index: 1;
 }
 
 

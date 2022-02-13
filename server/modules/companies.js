@@ -7,7 +7,6 @@ const {editCompanies} = require('../controllers/companies/editCompanies')
 const {removeCompanies} = require('../controllers/companies/removeCompanies')
 
 
-
 router.get('/', getCompanies)
 router.post('/', addCompanies)
 router.put('/', editCompanies)

@@ -158,7 +158,7 @@ export const Contacts = () => {
             <div className="selectedQuantity">
                 {storeContactData.length} Seleccionado/s
             </div>
-            <div className="deleteBtn" onClick={() => setDisplayDltContact(!displayDltContact)}>
+            <div className="trashBtn" onClick={() => setDisplayDltContact(!displayDltContact)}>
                 <FontAwesomeIcon className="trashIcon" icon={faTrash}></FontAwesomeIcon>
                 <h4>Eliminar contactos</h4>
             </div>

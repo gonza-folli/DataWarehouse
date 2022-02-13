@@ -1,4 +1,5 @@
 const Response = require('../utilities/response');
+const jwt_decode = require('jwt-decode');
 const {db_getSingleUser, db_getOriginalUser, db_getSingleUserByMail} = require('../models/db_users')
 
 
@@ -68,4 +69,22 @@ async function findDifferences (req,res,next) {
     }
 }
 
-module.exports= {findDuplicate, validateFields, validateEditFields, findDifferences}
+async function validateEmailRegex(req,res,next) {
+    const {email} = req.body
+    const re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/gm
+    const result = re.test(email)
+    try {
+        if (result) {
+            next()
+        } else {
+            throw new Error
+        }
+    } catch {
+        let response = new Response(true,400,'Debe ingresar un email válido')
+        res.status(400).send(response)
+        return
+    }
+}
+
+
+module.exports= {findDuplicate, validateFields, validateEditFields, findDifferences, validateEmailRegex}

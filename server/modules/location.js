@@ -12,6 +12,8 @@ const {getAvailableCities} = require('../controllers/location/getAvailableCities
 const {addCity} = require('../controllers/location/addCity')
 const {removeCity} = require('../controllers/location/removeCity')
 
+const middleware = require('../middlewares/middle_location')
+
 
 router.get('/', getLocation)
 router.get('/subregions', getAllSubregions)
@@ -21,7 +23,7 @@ router.delete('/country', removeCountry)
 router.post('/state', addState)
 router.delete('/state', removeState)
 router.get('/city', getAvailableCities)
-router.post('/city', addCity)
+router.post('/city', middleware.findDuplicate, addCity)
 router.delete('/city', removeCity)
 
 module.exports = router

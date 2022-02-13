@@ -49,7 +49,7 @@ export const UsersData = ({renderData, renderCleanUsers, openEditModal}) => {
         <td>{renderData.name}</td>
         <td>{renderData.lastname}</td>
         <td>{renderData.email}</td>
-        <td>{renderData.rol === "1" ? "Administrador" : "Usuario"}</td>
+        <td>{renderData.rol === "admin" ? "Administrador" : "Usuario"}</td>
         <td>{renderData.password}</td>
         <td className="td8">
             <div className="puntos">...</div>

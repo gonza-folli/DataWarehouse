@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { SearchContext } from '../Context/SearchProvider/SearchProvider'
 import { ProgressBar } from '../ProgressBar/ProgressBar'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -10,9 +10,20 @@ export const ContactData = ({renderData, openEditModal}) => {
 
     const {handleCheck, delContact} = useContext(SearchContext) //uso del Context para almacenar usuarios TILDADOS
 
+    const [rowStyle, setRowStyle] = useState(null)
+
+    const handleStyle = (evt) => {
+        if (evt.target.checked) {
+        setRowStyle({background: "rgb(207,238,240)"})
+        } else {
+            setRowStyle(null)
+        }
+    }
+
+
     return <>
-    <tr>
-        <td><input type="checkbox" className="selectContact" onChange={(evt) => handleCheck(renderData,evt)}/></td>
+    <tr style={rowStyle}>
+        <td><input type="checkbox" className="selectContact" onChange={(evt) => {handleCheck(renderData,evt);handleStyle(evt)}}/></td>
         <td className="td2">
             <div className="profilePhotoDiv"><img className="profilePhoto" src={renderData.profile_photo} alt="profilePhoto"/></div>
             <div className="profileData">
@@ -28,10 +39,11 @@ export const ContactData = ({renderData, openEditModal}) => {
         </td>
         <td>{renderData.company_name}</td>
         <td>{renderData.position}</td>
-        <td>{renderData.channels.map(x => <div key={x.name}>{x.name} - </div> )}</td>
-        <td className="td7"><div className="interestTd">
-            <div>{renderData.interest}%</div>
-            <ProgressBar done={renderData.interest}/>
+        {/* <td>{renderData.channels.map(x => <div key={x.name}>{x.name} - </div> )}</td> */}
+        <td className="td7">
+            <div className="interestTd">
+                <div>{renderData.interest}%</div>
+                <ProgressBar done={renderData.interest}/>
             </div>
         </td>
         <td className="td8">

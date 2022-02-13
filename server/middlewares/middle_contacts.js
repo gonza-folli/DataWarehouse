@@ -1,9 +1,24 @@
 const Response = require('../utilities/response');
-const {db_getSingleContact} = require('../models/db_contacts');
+const {db_getContacts, db_getSingleContact} = require('../models/db_contacts');
+
+async function validateAddFields (req,res,next) {
+    try {
+        const {name, lastname, profile_photo, position, email, id_company, id_city, interest} = req.body
+        if ((name !="" && name) && (lastname !="" && lastname) && (position !="" && position) && (email !="" && email) && (id_company !="" && id_company) && (id_city !="" && id_city) && (interest!="" && interest )) {
+            next()
+        } else {
+            throw new Error
+        }
+    } catch {
+        let response = new Response(true,400,'Debe Completar TODOS los datos')
+        res.status(400).send(response)
+        return
+    }
+}
 
 async function validateEditFields (req,res,next) {
     try {
-        const {id_contact, name, lastname, profile_photo, position, email, id_company, id_city, interest, newChannelData} = req.body
+        const {id_contact, name, lastname, profile_photo, position, email, id_company, id_city, interest} = req.body
         if (id_contact !="" && name !="" && lastname !="" && position !="" && email !="" && id_company !="" && id_city !="" && interest!="") {
             next()
         } else {
@@ -11,6 +26,24 @@ async function validateEditFields (req,res,next) {
         }
     } catch {
         let response = new Response(true,400,'Debe Completar TODOS los datos')
+        res.status(400).send(response)
+        return
+    }
+}
+
+async function findDuplicate (req,res,next) {
+    const {name, lastname, id_city, email} = req.body
+    let contactsDatabase = await db_getContacts()
+    let newDb = contactsDatabase.map(x =>  {
+            let edit = JSON.parse(x.channels).map(y => JSON.parse(y))
+            x.channels = edit
+            return x
+        })
+    let findDuplicate = newDb.filter(x => (x.name === name && x.lastname === lastname && parseInt(x.id_city) === parseInt(id_city)) || x.email === email)
+    if (findDuplicate.length == 0) {
+        next()
+    } else {
+        let response = new Response(true,400,'El usuario o Email que desea ingresar ya existe en la Base de Datos')
         res.status(400).send(response)
         return
     }
@@ -97,9 +130,9 @@ async function findChannelChanges (orig, newC) {
 
 
 async function validateChannelFields (req,res,next) {
-    const {newChannelData} = req.body
+    const {channelData} = req.body
     try {
-        if (newChannelData.whatsappUser !== "" || newChannelData.instagramUser !== "" || newChannelData.twitterUser !== "" || newChannelData.facebookUser !== "" ) {
+        if (channelData.whatsappUser !== "" || channelData.instagramUser !== "" || channelData.twitterUser !== "" || channelData.facebookUser !== "") {
             next()
         } else {
             throw new Error
@@ -111,4 +144,36 @@ async function validateChannelFields (req,res,next) {
     }
 }
 
-module.exports = { validateEditFields, findDifferences, validateChannelFields }
+async function validateChannelEditFields (req,res,next) {
+    const {newChannelData} = req.body
+    try {
+        if (newChannelData.whatsappUser !== "" || newChannelData.instagramUser !== "" || newChannelData.twitterUser !== "" || newChannelData.facebookUser !== "") {
+            next()
+        } else {
+            throw new Error
+        }
+    } catch {
+        let response = new Response(true,400,'Debe ingresar al menos 1 canal de contacto')
+        res.status(400).send(response)
+        return
+    }
+}
+
+async function validateEmailRegex(req,res,next) {
+    const {email} = req.body
+    const re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/gm
+    const result = re.test(email)
+    try {
+        if (result) {
+            next()
+        } else {
+            throw new Error
+        }
+    } catch {
+        let response = new Response(true,400,'Debe ingresar un email válido')
+        res.status(400).send(response)
+        return
+    }
+}
+
+module.exports = { validateAddFields, validateEditFields, findDuplicate, findDifferences, validateChannelFields, validateChannelEditFields, validateEmailRegex }

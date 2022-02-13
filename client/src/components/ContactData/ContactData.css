@@ -6,7 +6,6 @@
 tr:hover {
     background-color: rgba(0,0,0,0.08);
 }
-
 .profilePhotoDiv {
     margin: 0 3% 0 0;
 }
@@ -21,7 +20,7 @@ tr:hover {
 .profileEmail {
     font-size: 12px;
     font-weight: 300;
-    color: #BDBDBD;
+    color: gray;
 }
 
 .profileLocation {

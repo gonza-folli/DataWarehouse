@@ -32,14 +32,6 @@ export const AddContactModal = ({closeModal, editData}) => {
             }},).then(response => response.json()).then(data => setCompanies(data.response))
     }, [getAllSubregions, token])
 
-    // useEffect(() => {
-    //     console.log(contactData)
-    // }, [contactData])
-
-    // useEffect(() => {
-    //     console.log(editData)
-    // }, [editData])
-
     //funcion para activar siguiente campo
     const [countryDisabled, setCountryDisabled] = useState(true)
     const [cityDisabled, setCityDisabled] = useState(true)
@@ -264,11 +256,7 @@ export const AddContactModal = ({closeModal, editData}) => {
         }
     }, [editData])
 
-    // useEffect(() => {
-    //     console.log(newContact)
-    // }, [newContact])
-
-    //funcion EDITAR CONTACTO
+//funcion EDITAR CONTACTO
     async function changeContact () {
     // e.preventDefault()
     let contactToAdd = {...newContact, newChannelData}
@@ -297,7 +285,44 @@ export const AddContactModal = ({closeModal, editData}) => {
         }
     })
     .catch(e => console.log(e))
-}
+    }
+
+//funcion ELIMINAR CONTACTO
+    const deleteContact = async (contactData) => {
+        await Swal.fire({
+            text: `Está seguro que desea eliminar al usuario ${contactData.name} ${contactData.lastname}`,
+            icon: 'question',
+            showDenyButton: true,
+            denyButtonText: `No`,
+            confirmButtonText: 'Si'
+        }).then(result => {
+            if (result.isConfirmed) {
+                fetch('/contacts', {
+                    method: 'DELETE',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                },
+                    body: JSON.stringify(contactData)
+                })
+                .then(response => response.json()).then(data => {
+                    if (data.error === false) {
+                        Swal.fire({
+                            icon: 'success',
+                            text: `${data.message}`,
+                        })
+                        closeModal()
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            text: `${data.message}`,
+                        })
+                    }
+                })
+                .catch(e => console.log(e))
+            }
+        })
+    }
 
 
     return <div className="contactModal">
@@ -316,7 +341,7 @@ export const AddContactModal = ({closeModal, editData}) => {
                 <label>Nombre *<input value={newContact.name} type="text" name="name" onChange={(evt) => setNewContact({...newContact, [evt.target.name]: evt.target.value})} required></input></label>
                 <label>Apellido *<input value={newContact.lastname} type="text" name="lastname" onChange={(evt) => setNewContact({...newContact, [evt.target.name]: evt.target.value})} required></input></label>
                 <label>Cargo *<input value={newContact.position} type="text" name="position" onChange={(evt) => setNewContact({...newContact, [evt.target.name]: evt.target.value})} required></input></label>
-                <label>Email *<input value={newContact.email} type="text" name="email" onChange={(evt) => setNewContact({...newContact, [evt.target.name]: evt.target.value})} required></input></label>
+                <label>Email *<input value={newContact.email} type="email" name="email" onChange={(evt) => setNewContact({...newContact, [evt.target.name]: evt.target.value})} required></input></label>
                 <label>Compañía *
                     <select name="company_name" onChange={(evt) => handleCompanyChange(evt)}>
                         <option>{newContact.company_name}</option>
@@ -328,7 +353,7 @@ export const AddContactModal = ({closeModal, editData}) => {
                 <label>Nombre *<input type="text" name="name" onChange={(evt) => handleChange(evt)} required></input></label>
                 <label>Apellido *<input type="text" name="lastname" onChange={(evt) => handleChange(evt)} required></input></label>
                 <label>Cargo *<input type="text" name="position" onChange={(evt) => handleChange(evt)} required></input></label>
-                <label>Email *<input type="text" name="email" onChange={(evt) => handleChange(evt)} required></input></label>
+                <label>Email *<input type="email" name="email" onChange={(evt) => handleChange(evt)} required></input></label>
                 <label>Compañía *
                     <select name="company_name" onChange={(evt) => handleCompanyChange(evt)}>
                         <option>Seleccionar compañía</option>
@@ -492,11 +517,15 @@ export const AddContactModal = ({closeModal, editData}) => {
     </div>
     <div className="modalFooter">
         <div className="modalActions">
-            <button className="cancelBtn" onClick={() =>closeModal()}>Cancelar</button>
             {editData ? 
-            <button className="saveBtn" onClick={()=> changeContact()}>Guardar cambios</button> 
-            : 
-            <button className="saveBtn" onClick={()=> saveContact()}>Guardar contacto</button>}
+            <>
+                <button className="deleteBtn" onClick={() =>deleteContact(editData)}>Eliminar Contacto</button>
+                <button className="saveBtn" onClick={()=> changeContact()}>Guardar cambios</button> 
+            </>
+            : <>
+                <button className="cancelBtn" onClick={() =>closeModal()}>Cancelar</button>
+                <button className="saveBtn" onClick={()=> saveContact()}>Guardar contacto</button>
+            </>}
         </div>
     </div>
     </div>

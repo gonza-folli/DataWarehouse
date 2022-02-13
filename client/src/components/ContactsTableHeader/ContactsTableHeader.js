@@ -13,7 +13,6 @@ export const ContactsTableHeader = ({renderData, openEditModal}) => {
                     <th className='th3'>País/Región</th>
                     <th className='th4'>Compañía</th>
                     <th className='th5'>Cargo</th>
-                    <th className='th6'>Canal preferido</th>
                     <th className='th7'>Interés</th>
                     <th className='th8'>Acciones</th>
                 </tr>

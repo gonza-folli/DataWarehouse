@@ -18,6 +18,8 @@ export const AddCountryModal = ({closeModal, database}) => {
         country: ""
     })
 
+    const [countryDisabled, setCountryDisabled] = useState(true)
+
 
     useEffect(() => {
         if (location.region !== "" && location.country === "") {
@@ -34,7 +36,7 @@ export const AddCountryModal = ({closeModal, database}) => {
                 icon: 'error',
                 text: `El pais ${location.country} ya se encuentra registrado!`,
             })
-        } else {
+        } else if (location.region !== "" && location.subregion !== "") {
             await fetch('/location/country', {
                 method: 'POST',
                 headers: { 
@@ -43,14 +45,26 @@ export const AddCountryModal = ({closeModal, database}) => {
                 },
                 body: JSON.stringify(location)
             })
-            .then(response => response.json()).then(data => 
-                Swal.fire({
-                    icon: 'success',
-                    text: `El pais ${location.country} se ha registrado correctamente!`,
-                })
-            )
+            .then(response => response.json()).then(data => {
+                if (data.error === false) {
+                    Swal.fire({
+                        icon: 'success',
+                        text: `${data.message}`,
+                    })
+                    closeModal()
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        text: `${data.message}`,
+                    })
+                }
+            })
             .catch(e => console.log(e))
-            closeModal()
+        } else {
+            Swal.fire({
+                icon: 'error',
+                text: `Debe seleccionar el continente y subregión`,
+            })
         }
     }
 
@@ -67,12 +81,12 @@ export const AddCountryModal = ({closeModal, database}) => {
                     <option>Oceania</option>
                 </select>
                 <p>Ingrese la SubRegión que desea agregar:</p>
-                <select defaultValue={"-Seleccione una Sub región-"} type="text" name="subregion" onChange={(evt) => setLocation({...location, [evt.target.name]: evt.target.value})}>
+                <select defaultValue={"-Seleccione una Sub región-"} type="text" name="subregion" onChange={(evt) => {setLocation({...location, [evt.target.name]: evt.target.value}); setCountryDisabled(false)}}>
                     <option disabled>-Seleccione una Sub región-</option>
                     {renderSubregion ? renderSubregion.map(x => <option key={x.subregion}>{x.subregion}</option>) : null}
                 </select>
                 <p>Ingrese el País que desea agregar: *</p>
-                <input type="text" name="country" onChange={(evt) => setLocation({...location, [evt.target.name]: evt.target.value})} required></input>
+                <input type="text" name="country" onChange={(evt) => setLocation({...location, [evt.target.name]: evt.target.value})} required disabled={countryDisabled}></input>
                 <div className="genericModalActions">
                     <button className="cancelBtn" type="button" onClick={() =>closeModal()}>Cancelar</button>
                     <button className="saveBtn" type="submit">Guardar</button>
