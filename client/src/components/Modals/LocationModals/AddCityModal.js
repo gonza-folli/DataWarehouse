@@ -30,6 +30,9 @@ export const AddCityModal = ({closeModal, countryData, editData}) => {
         }
     }, [getStates, getCities, location])
 
+    useEffect(() => {
+        console.log(location)
+    }, [location])
 
     function onSelectCountry (evt) {
         const selectedIndex = evt.target.options.selectedIndex

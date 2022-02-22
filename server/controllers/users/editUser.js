@@ -10,8 +10,8 @@ const editUser = async function (req,res)  {
         res.status(200).send(response)
     }
     catch (e) {
-        response = new Response(true,400,'Error al modificar el usuario', e)
-        res.status(400).send(response)
+        response = new Response(true,500,'Error al modificar datos del usuario')
+        res.status(500).send(response)
     }
 }
 

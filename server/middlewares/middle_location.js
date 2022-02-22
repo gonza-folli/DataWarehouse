@@ -18,8 +18,8 @@ async function findDuplicate (req,res,next) {
         }
     }
     catch (e) {
-        let response = new Response(true,400,`El domicilio ${address} de la Ciudad ${city} ya se encuentra cargado en el Estado/Provincia ${state}, ${country} `)
-        res.status(400).send(response)
+        let response = new Response(true,409,`El domicilio ${address} de la Ciudad ${city} ya se encuentra cargado en el Estado/Provincia ${state}, ${country} `)
+        res.status(409).send(response)
         return
     }
 }

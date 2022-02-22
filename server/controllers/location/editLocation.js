@@ -57,8 +57,8 @@ const editLocation = async function (req,res)  {
         }
     }
     catch (e) {
-        response = new Response(true,400,'Error al modificar la dirección o la dirección ya existe', e)
-        res.status(400).send(response)
+        response = new Response(true,500,'Error al modificar la dirección o la dirección ya existe')
+        res.status(500).send(response)
     }
 }
 

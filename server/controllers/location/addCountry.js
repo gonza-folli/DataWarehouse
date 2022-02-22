@@ -9,8 +9,8 @@ const addCountry = async function (req,res)  {
         res.status(200).send(response)
     }
     catch (e) {
-        let response = new Response(true,400,`Error al agregar el país ${country}`)
-        res.status(400).send(response)
+        let response = new Response(true,500,`Error al agregar el país ${country}`)
+        res.status(500).send(response)
     }   
 }
 

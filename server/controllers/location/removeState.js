@@ -10,8 +10,8 @@ const removeState = async function (req,res) {
         res.status(200).send(response)
     }
     catch (e) {
-        response = new Response(true,400,`Primero debe eliminar las ciudades asociadas a la provincia ${state}`)
-        res.status(400).send(response)
+        response = new Response(true,408,`Primero debe eliminar las ciudades asociadas a la provincia ${state}`)
+        res.status(408).send(response)
         return
     }
 }

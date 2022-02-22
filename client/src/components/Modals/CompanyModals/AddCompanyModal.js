@@ -46,16 +46,24 @@ export const AddCompanyModal = ({closeModal, companiesDatabase}) => {
                 headers: { 
                     'Content-Type': 'application/json' ,
                     'Authorization': `Bearer ${token}`
-            },
+                },
                 body: JSON.stringify(company)
             })
-            .then(response => response.json()).then(response => 
-                Swal.fire({
-                text: `La compañia ${company.name} fue agregada correctamente`,
-                icon: 'success',
-            }))
+            .then(response => response.json()).then(data => {
+                if (data.error === false) {
+                    Swal.fire({
+                        icon: 'success',
+                        text: `${data.message}`,
+                    })
+                    closeModal()
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        text: `${data.message}`,
+                    })
+                }
+            })
             .catch(e => console.log(e))
-            closeModal()
         }
     }
 

@@ -9,8 +9,8 @@ const getCompanies = async function (req,res)  {
         res.status(200).send(response)
     }
     catch (e) {
-        response = new Response(true,400,'Error al consultar la lista de compañías', e)
-        res.status(400).send(response)
+        response = new Response(true,500,'Error al consultar la lista de compañías')
+        res.status(500).send(response)
     }
 }
 

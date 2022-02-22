@@ -10,7 +10,7 @@ const login = async function (req, res) {
             const token = await validateToken(dbRes[0].email, dbRes[0].rol)
             dbRes[0].key = token
             delete dbRes[0]["password"]
-            let response = new Response(false,200,'Usuario Logeado correctamente', dbRes[0])
+            let response = new Response(false,200,'Usuario logeado correctamente', dbRes[0])
             res.status(200).send(response)
         } else {
             throw new Error

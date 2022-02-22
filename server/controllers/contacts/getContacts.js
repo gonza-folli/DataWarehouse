@@ -14,8 +14,8 @@ const getContacts = async function (req, res) {
     }
     catch (e) {
         console.log(e)
-        response = new Response(true,400,'Error al consultar la lista de contactos', e)
-        res.status(400).send(response)
+        response = new Response(true,500,'Error al consultar la lista de contactos')
+        res.status(500).send(response)
     }
 
 }

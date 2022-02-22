@@ -1,4 +1,4 @@
-const {db_getContacts, db_addContact, db_addChannel, db_addChannelDefault, db_addContactChannels} = require('../../models/db_contacts');
+const {db_addContact, db_addChannel, db_addChannelDefault, db_addContactChannels} = require('../../models/db_contacts');
 const Response = require('../../utilities/response');
 
 const addContact = async function (req, res) {
@@ -49,8 +49,8 @@ const addContact = async function (req, res) {
         return
     }
     catch (e) {
-        let response = new Response(true,400,'Error al agregar el contacto', e)
-        res.status(400).send(response)
+        let response = new Response(true,500,'Error al agregar el contacto')
+        res.status(500).send(response)
     }
 }
 

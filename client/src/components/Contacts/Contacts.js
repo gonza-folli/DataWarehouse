@@ -19,15 +19,6 @@ export const Contacts = () => {
 
     //Obtener Token
     const token = localStorage.getItem('token')
-    // const [validateToken, setValidateToken] = useState(false)
-
-    // useEffect(() => {
-    //     if (token !== "") {
-    //         setValidateToken(true)
-    //     }
-    // }, [token])
-
-
 
     //Estado para renderizar los contactos
     const [renderData, setRenderData] = useState(null)

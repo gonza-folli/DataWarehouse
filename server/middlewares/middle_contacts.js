@@ -10,8 +10,8 @@ async function validateAddFields (req,res,next) {
             throw new Error
         }
     } catch {
-        let response = new Response(true,400,'Debe Completar TODOS los datos')
-        res.status(400).send(response)
+        let response = new Response(true,403,'Debe Completar TODOS los datos')
+        res.status(403).send(response)
         return
     }
 }
@@ -25,8 +25,8 @@ async function validateEditFields (req,res,next) {
             throw new Error
         }
     } catch {
-        let response = new Response(true,400,'Debe Completar TODOS los datos')
-        res.status(400).send(response)
+        let response = new Response(true,403,'Debe Completar TODOS los datos')
+        res.status(403).send(response)
         return
     }
 }
@@ -43,8 +43,8 @@ async function findDuplicate (req,res,next) {
     if (findDuplicate.length == 0) {
         next()
     } else {
-        let response = new Response(true,400,'El usuario o Email que desea ingresar ya existe en la Base de Datos')
-        res.status(400).send(response)
+        let response = new Response(true,407,'El usuario o Email que desea ingresar ya existe en la Base de Datos')
+        res.status(407).send(response)
         return
     }
 }
@@ -69,8 +69,8 @@ async function findDifferences (req,res,next) {
         }
     }
     catch (e) {
-        let response = new Response(true,400,'No se ha modificado ningun dato')
-        res.status(400).send(response)
+        let response = new Response(true,406,'No se ha modificado ningun dato')
+        res.status(406).send(response)
         return
     }
 }
@@ -138,8 +138,8 @@ async function validateChannelFields (req,res,next) {
             throw new Error
         }
     } catch {
-        let response = new Response(true,400,'Debe ingresar al menos 1 canal de contacto')
-        res.status(400).send(response)
+        let response = new Response(true,411,'Debe ingresar al menos 1 canal de contacto')
+        res.status(411).send(response)
         return
     }
 }
@@ -153,8 +153,8 @@ async function validateChannelEditFields (req,res,next) {
             throw new Error
         }
     } catch {
-        let response = new Response(true,400,'Debe ingresar al menos 1 canal de contacto')
-        res.status(400).send(response)
+        let response = new Response(true,411,'Debe ingresar al menos 1 canal de contacto')
+        res.status(411).send(response)
         return
     }
 }
@@ -170,8 +170,8 @@ async function validateEmailRegex(req,res,next) {
             throw new Error
         }
     } catch {
-        let response = new Response(true,400,'Debe ingresar un email válido')
-        res.status(400).send(response)
+        let response = new Response(true,404,'Debe ingresar un email válido')
+        res.status(404).send(response)
         return
     }
 }

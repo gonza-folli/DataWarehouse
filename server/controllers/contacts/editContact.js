@@ -100,8 +100,8 @@ const editContact = async function (req, res) {
             return
     }
     catch (e) {
-        let response = new Response(true,400,'Error al consultar la lista de contactos', e)
-        res.status(400).send(response)
+        let response = new Response(true,500,'Error al editar el contacto')
+        res.status(500).send(response)
     }
 }
 

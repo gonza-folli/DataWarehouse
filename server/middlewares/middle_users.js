@@ -1,5 +1,5 @@
 const Response = require('../utilities/response');
-const jwt_decode = require('jwt-decode');
+// const jwt_decode = require('jwt-decode');
 const {db_getSingleUser, db_getOriginalUser, db_getSingleUserByMail} = require('../models/db_users')
 
 
@@ -12,8 +12,8 @@ async function validateFields (req,res,next) {
             throw new Error
         }
     } catch {
-        let response = new Response(true,400,'Debe Completar TODOS los datos')
-        res.status(400).send(response)
+        let response = new Response(true,403,'Debe Completar TODOS los datos')
+        res.status(403).send(response)
         return
     }
 }
@@ -27,8 +27,8 @@ async function validateEditFields (req,res,next) {
             throw new Error
         }
     } catch {
-        let response = new Response(true,400,'Debe Completar TODOS los datos')
-        res.status(400).send(response)
+        let response = new Response(true,403,'Debe Completar TODOS los datos')
+        res.status(403).send(response)
         return
     }
 }
@@ -45,8 +45,8 @@ async function findDuplicate (req,res,next) {
         }
     }
     catch (e) {
-        let response = new Response(true,400,'El usuario ya se encuentra registrado o el E-mail utilizado')
-        res.status(400).send(response)
+        let response = new Response(true,402,'El usuario ya se encuentra registrado o el E-mail utilizado')
+        res.status(402).send(response)
         return
     }
 }
@@ -63,8 +63,8 @@ async function findDifferences (req,res,next) {
         }
     }
     catch (e) {
-        let response = new Response(true,400,'No se ha modificado ningun dato')
-        res.status(400).send(response)
+        let response = new Response(true,406,'No se ha modificado ningun dato')
+        res.status(406).send(response)
         return
     }
 }
@@ -80,8 +80,8 @@ async function validateEmailRegex(req,res,next) {
             throw new Error
         }
     } catch {
-        let response = new Response(true,400,'Debe ingresar un email válido')
-        res.status(400).send(response)
+        let response = new Response(true,404,'Debe ingresar un email válido')
+        res.status(404).send(response)
         return
     }
 }

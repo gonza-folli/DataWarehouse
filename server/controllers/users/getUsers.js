@@ -9,8 +9,8 @@ const getUsers= async function (req,res)  {
         res.status(200).send(response)
     }
     catch (e) {
-        response = new Response(true,400,'Error al consultar la lista de usuarios', e)
-        res.status(400).send(response)
+        response = new Response(true,500,'Error al consultar la lista de usuarios')
+        res.status(500).send(response)
     }
 }
 

@@ -5,7 +5,6 @@ const getLocation = async function (req, res) {
     const {region, country, state, id_country, city} = req.query
     try{
         if (region) {
-            console.log(region)
             let dbRes = await db_getSubregion([region])
             res.status(200).send(dbRes)
         } if (!country && !state && !region && !id_country && !city) {
@@ -27,7 +26,8 @@ const getLocation = async function (req, res) {
             res.status(200).send(response)
         }
     } catch(e) {
-        res.status(400).send(e)
+        response = new Response(false,500,'Error al obtener las ubicaciones')
+        res.status(500).send(response)
     }
 
 }
