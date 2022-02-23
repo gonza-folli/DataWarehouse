@@ -71,7 +71,7 @@ export const SearchProvider = ({children}) => {
 
 
     return <SearchContext.Provider value={{getContacts, 
-            dataFiltered, allContacts, searchData, setSearchData, handleCheck, storeContactData, 
+            dataFiltered, allContacts, searchData, setSearchData, handleCheck, storeContactData, setStoreContactData,
             viewContact, displayEditContact, editContactData, editContact, 
             delContact, displayDelSingleContact, delContactData, setDelContactData, setDisplayDelSingleContact}}>
         {children}

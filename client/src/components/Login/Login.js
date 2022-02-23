@@ -112,7 +112,7 @@ export const Login = ({setAuth, setLogUser}) => {
             <form onSubmit={(e) => login(e)}>
                 <h1> Iniciar Sesión </h1>
                 <div className="loginUserForm"> 
-                    <p> Ingrese usuario </p>
+                    <p> Ingrese usuario (es el email)</p>
                         <input type="text" name="user" onChange={(evt) =>handleLoginChange(evt)}/>
                     <p> Ingrese su contraseña </p>
                         <input type="Password" name="pass" onChange={(evt) =>handleLoginChange(evt)}/>

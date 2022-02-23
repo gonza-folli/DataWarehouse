@@ -183,6 +183,7 @@ export const AddCityModal = ({closeModal, countryData, editData}) => {
 
     return <div className="genericModal">
             <form className="genericModalBody" onSubmit={(e) => saveCity(e)}>
+                {editData ? <p>Para que se habiliten los campos debe volver a cargar desde el País!</p> : null}
                 <p>Ingrese el País donde se encuentra la ciudad: *</p>
                 <select defaultValue={"-Seleccione un País-"} type="text" name="country" onChange={(evt) => onSelectCountry(evt)} required>
                     {editData ? <option>{newLocation.country}</option> : <option>-Seleccione un País-</option>}

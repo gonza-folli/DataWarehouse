@@ -14,7 +14,7 @@ const removeContact = async function (req, res) {
     }
     catch (e) {
         console.log(e)
-        response = new Response(true,500,`Error al eliminar el contacto ${name} ${lastname}`, e)
+        response = new Response(true,500,`Error al eliminar el contacto ${name} ${lastname}`)
         res.status(500).send(response)
     }
 
