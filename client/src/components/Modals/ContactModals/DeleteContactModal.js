@@ -1,4 +1,4 @@
-import { useContext, useEffect} from 'react'
+import { useContext} from 'react'
 import Swal from 'sweetalert2'
 import DeleteImg from '../../assets/DeleteContact.png'
 import { SearchContext } from '../../Context/SearchProvider/SearchProvider'

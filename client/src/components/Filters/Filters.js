@@ -8,11 +8,16 @@ export const Filters = ({filters, setFilters}) => {
 
     //Limpiar UN Filtro de Búsqueda en el menú
     const clearFilter = (filter) => {
-    let obj = searchData
-    let {[filter]: _, ...result } = obj
-    setSearchData(result)
-    setFilters(result)
-}
+        let obj = searchData
+        let {[filter]: _, ...result } = obj
+        if (Object.keys(result).length === 0) {
+            setSearchData(null)
+            setFilters(null)
+        } else {
+            setSearchData(result)
+            setFilters(result)
+        }
+    }
 
 
     return <div className="filterContainer">

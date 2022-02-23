@@ -22,7 +22,6 @@ export const SearchMenu = ({contactDatabase, setDataFiltered}) => {
     },[contactDatabase])
 
     //Aplicar Filtros de Búsqueda en el menú
-    // const [searchData, setSearchData] = useState(null) //seteo los filtros a aplicar en la búsqueda
     const filterChange = (event) => {
         setSearchData(prevState => ({...prevState, [event.target.name]: event.target.value}))
     }
