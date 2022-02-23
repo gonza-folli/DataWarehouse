@@ -29,7 +29,6 @@ export const SearchMenu = ({contactDatabase, setDataFiltered}) => {
 
 
     useEffect(()=> {
-        // console.log(searchData)
             if (searchData) {
                 const filtered = contactDatabase.filter(x => 
                     (!searchData.name ||  x.name.toLowerCase().indexOf(searchData.name.toLowerCase()) !== -1 || x.lastname.toLowerCase().indexOf(searchData.name.toLowerCase()) !== -1) && 

@@ -14,7 +14,6 @@ const removeMultipleContacts = async function (req, res) {
         res.status(200).send(response)
     }
     catch (e) {
-        console.log(e)
         let response = new Response(true,500,`Error al eliminar los contactos`)
         res.status(500).send(response)
     }

@@ -40,7 +40,7 @@ https://www.apachefriends.org/download.html
 El **primer archivo** *“datawarehouse.sql”*  creará las tablas en la Base de datos necesarias para el proyecto, y asimismo creará una función **"JSON_ARRAYAGG"** la cual se utiliza para obtener los canales de los contactos en formato Json devolviendo un array para manipular los mismos.
 
 Los **restantes archivos** harán un volcado inicial de datos en las tablas para comenzar a utilizarlas en el proyecto.
-  
+
 
 ## Configuraciones
 
@@ -61,7 +61,7 @@ Los **restantes archivos** harán un volcado inicial de datos en las tablas para
 
 ## Documentación
 
-Toda la documentación relativa a los Endpoints de la Api se encuentra en la raíz del proyecto, carpeta “utilities/ gonza-folli-DelilahResto-1.0.0-resolved.yaml”.
+Toda la documentación relativa a los Endpoints de la Api se encuentra en la raíz del proyecto, carpeta “utilities/gonza-folli-DataWarehouse-1.0.0-resolved.yaml”.
 
 Dicha documentación fue elaborada con Swagger
 
@@ -81,7 +81,7 @@ El puerto utilizado para hostear el front-end es el **PORT 3000**.
 Al ser un proyecto que tiene 2 puertos que se ejecutan, uno para Front y otro para Back, se creó una instrucción para ejecutarlas simultáneamente, por lo que para levantar el proyecto entero, se debe ubicar en la raíz del proyecto y ejecutar lo siguiente:
 
     npm run dev
-    
+
 De este modo se levantarán simultáneamente Front y Back.
 Para comenzar a operar se debe acceder a algún explorador web (preferentemente Chrome) y acceder al siguiente link
 [http://localhost:3000/](http://localhost:3000/)

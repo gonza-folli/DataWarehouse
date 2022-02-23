@@ -26,10 +26,6 @@ export const EditContactModal = () => {
         setnewContactData({...newContactData, [event.target.name]: parseInt(event.target.value)})
     }
 
-    useEffect( () => {
-        console.log(newContactData)
-    }, [newContactData])
-
 
     return <div className="contactModal">
                 <div className="modalHeader">

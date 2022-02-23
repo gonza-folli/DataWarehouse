@@ -6,7 +6,6 @@ const addState = async function (req,res) {
     const {id_country, state} = req.body
     try {
         let dbRes = await db_addState([state, id_country])
-        console.log(dbRes)
         let response = new Response(false,200,`La provincia ${state} ha sido agregada correctamente!`)
         res.status(200).send(response)
     }

@@ -13,7 +13,6 @@ const getContacts = async function (req, res) {
         res.status(200).send(response)
     }
     catch (e) {
-        console.log(e)
         response = new Response(true,500,'Error al consultar la lista de contactos')
         res.status(500).send(response)
     }

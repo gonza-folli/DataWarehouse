@@ -3,10 +3,6 @@ import { Route, Redirect } from "react-router-dom";
 
 const ProtectedRoute = ({ auth, component: Component, ...rest }) => {
 
-    // useEffect( ()=> {
-    //     console.log(auth)
-    // }, [auth])
-
     return (
     <Route
         {...rest}

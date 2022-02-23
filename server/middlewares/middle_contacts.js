@@ -43,8 +43,8 @@ async function findDuplicate (req,res,next) {
     if (findDuplicate.length == 0) {
         next()
     } else {
-        let response = new Response(true,407,'El usuario o Email que desea ingresar ya existe en la Base de Datos')
-        res.status(407).send(response)
+        let response = new Response(true,408,'El usuario o Email que desea ingresar ya existe en la Base de Datos')
+        res.status(408).send(response)
         return
     }
 }

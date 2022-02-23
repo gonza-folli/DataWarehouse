@@ -7,7 +7,6 @@ const addUser = async function (req,res)  {
     try {
         let dbRes = await db_addUser([name, lastname , email, pass])
         let response = new Response(false, 200, `Usuario ${name} ${lastname} registrado correctamente`, dbRes)
-        console.log(response)
         res.status(200).send(response)
     }
     catch (e) {

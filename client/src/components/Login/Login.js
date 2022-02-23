@@ -70,7 +70,6 @@ export const Login = ({setAuth, setLogUser}) => {
                 text: `${data.message}`,
                 icon: 'success',
                 })
-                console.log(data)
                 localStorage.setItem("token", data.response.key)
                 setLogUser(data.response)
                 setAuth(true)

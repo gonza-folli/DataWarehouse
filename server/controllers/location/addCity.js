@@ -5,7 +5,6 @@ const addCity = async function (req,res)  {
     const {id_country, id_state, city, address} = req.body
     try {
         let dbRes = await db_addCity([city, address, id_country, id_state])
-        console.log(dbRes)
         let response = new Response(false,200,`La ciudad ${city} ha sido agregada correctamente!`)
         res.status(200).send(response)
     }

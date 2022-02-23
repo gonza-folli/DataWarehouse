@@ -56,7 +56,6 @@ export const Contacts = () => {
 
     //seteo para renderizar los contactos filtrados(BUSCADOR AVANZADO) o completos
     useEffect(()=> {
-        // console.log(storeContactData)
             if (filters) {
                 const filtered = contactDatabase.filter(x => 
                     (!filters.name ||  x.name.toLowerCase().indexOf(filters.name.toLowerCase()) !== -1 || x.lastname.toLowerCase().indexOf(filters.name.toLowerCase()) !== -1) && 

@@ -81,7 +81,7 @@ export const AddUserModal = ({closeModal, editData}) => {
                 lastname: editData.lastname,
                 email: editData.email,
                 rol: editData.rol,
-                pass: editData.password,
+                pass: "",
                 repass: "",
             })
         }

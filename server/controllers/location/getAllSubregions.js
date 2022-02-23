@@ -3,7 +3,6 @@ const Response = require('../../utilities/response')
 
 const getAllSubregions = async function (req, res) {
     const {subregion} = req.query
-    console.log(subregion)
     try{
         if (!subregion) {
             let dbRes = await db_getAllSubregions()

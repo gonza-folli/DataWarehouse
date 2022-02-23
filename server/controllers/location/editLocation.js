@@ -16,7 +16,6 @@ const editLocation = async function (req,res)  {
             x.state.toLowerCase() === state.toLowerCase() &&
             x.country.toLowerCase() === country.toLowerCase()
             ).length > 0);
-        console.log(anyDuplicate)
         if (anyDuplicate === true) {throw new Error}
         if (originalCity[0].country !== country) {
             if (originalCity[0].state !== state) {
